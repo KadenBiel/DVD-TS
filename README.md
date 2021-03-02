@@ -30,7 +30,8 @@ This project creates a replica of the DVD screen saver, which we all know and lo
 <!-- Installation -->
 ## Installation
 
-Download the latest version from [releases](https://github.com/KadenBiel/DVD-TS/releases) and run the `DVD_Setup-X.X.X.exe` file. You may get antivirus warnings, this is because I can't be bothered to sign my program.
+Download the latest version from [releases](https://github.com/KadenBiel/DVD-TS/releases) and run the `DVD_Setup-X.X.X.exe` file.
+** NOTE: There are no releases yet because this project is still under development
 
 <!-- Developement -->
 ## Developement
