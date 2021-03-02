@@ -1,7 +1,7 @@
 import { autoUpdater } from 'electron-updater';
 import { app, BrowserWindow } from 'electron';
 import windowStateKeeper from 'electron-window-state';
-import { IpcRendererMessages } from '../common/ipc';
+import { IpcRendererMessages } from './common/ipc-messages';
 import { ProgressInfo } from 'builder-util-runtime';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
