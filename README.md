@@ -5,7 +5,6 @@
     <h2 align="center">DVD Screen</h2>
     <p align="center">
         Simple DVD screen program
-
         <br />
         <a href="https://github.com/KadenBiel/DVD-TS/issues">Report a bug</a>
         .
@@ -77,5 +76,6 @@ Not sure how much anyone will be able to contribute, this is a simple program bu
 5. Open a pull request
 
 <!-- License -->
+## License
 
 Distributed under the GNU General Public License v3.0. See `LICENSE` for more information.
