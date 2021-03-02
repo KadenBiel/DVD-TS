@@ -1,8 +1,13 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const electron = require('electron');
 const { autoUpdater } = require('electron-updater');
 const { ProgressInfo } = require('builder-util-runtime');
 const windowStateKeeper = require("electron-window-state");
+const path = require('path');
+const url = require('url');
 
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const ipcMain = electron.ipcMain;
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
@@ -13,12 +18,15 @@ function createWindow () {
 	mainWindow = new BrowserWindow({
 	  width: 640,
 	  height: 480,
-
 	  webPreferences: {
 		nodeIntegration: true,
 	  },
 	});
-	mainWindow.loadFile('index.html');
+	mainWindow.loadURL(url.format({
+		pathname: path.join(__dirname, 'index.html'),
+		protocol: 'file:',
+		slashes: true
+	}));
 	mainWindow.on('closed', function () {
 	  mainWindow = null;
 	});

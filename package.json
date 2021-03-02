@@ -5,12 +5,9 @@
   "main": "src/main.ts",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
-    "lint": "eslint src",
     "start": "electron .",
-    "dist": "yarn compile && electron-builder --win --x64 --ia32",
-    "dist:32": "yarn compile && electron-builder --win --ia32",
-    "dist:64": "yarn compile && electron-builder --win --x64",
-    "publish": "yarn compile && electron-builder --win --x64 --ia32 --publish always"
+    "build": "yarn compile && electron-builder build --win --x64 --ia32 --publish never",
+    "publish": "yarn compile && electron-builder build --win --x64 --ia32 --publish always"
   },
   "repository": {
     "url": "https://github.com/KadenBiel/DVD-TS.git",

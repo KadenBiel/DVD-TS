@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="updater.ts"></script>
+    <script src="dvd.js"></script>
+    <style src="mainWindow.css"></style>
+    <h1>DVD Screen v1.0.0</h1>
+  </head>
+  <body>
+    <div id="notification" class="hidden">
+      <p id="message"></p>
+      <button id="close-button" onClick="closeNotification()">
+        Close
+      </button>
+      <button id="restart-button" onClick="restartApp()" class="hidden">
+        Restart
+      </button>
+    </div>
+    <canvas id="c"></canvas>
+  </body>
+</html>
