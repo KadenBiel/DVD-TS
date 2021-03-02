@@ -62,7 +62,7 @@ yarn install
 ```
 3. Running the project
 ```sh
-yarn dev
+yarn start
 ```
 
 <!-- Contributing -->

@@ -1,9 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>DVD ScreenSaver v1</title>
-</head>
-<body>
-    <h1>This is the DVD screen saver</h1>
-</body>
-</html>
+<canvas id="c">
+    <script src="updater.ts"></script>
+    <style src="mainWindow.css"></style>
+    <div id="notification" class="hidden">
+        <p id="message"></p>
+        <button id="close-button" onClick="closeNotification()">
+          Close
+        </button>
+        <button id="restart-button" onClick="restartApp()" class="hidden">
+          Restart
+        </button>
+    </div>
+    <script src="dvd.js"></script>
