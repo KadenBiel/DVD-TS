@@ -1,0 +1,49 @@
+{
+  "name": "dvdjs",
+  "version": "1.0.0",
+  "description": "Full-fledged DVD screen saver",
+  "main": "main.ts",
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "lint": "eslint src",
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder --win --x64 --ia32",
+    "dist:32": "yarn compile && electron-builder --win --ia32",
+    "dist:64": "yarn compile && electron-builder --win --x64",
+    "publish": "yarn compile && electron-builder --win --x64 --ia32 --publish always"
+  },
+  "repository": {
+    "url": "https://github.com/KadenBiel/DVD-TS.git",
+    "type": "git"
+  },
+  "author": {
+    "name": "Kaden",
+    "email": "kaden.secondday@gmail.com"
+  },
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "electron": "^11.3.0",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "electron-store": "^6.0.1",
+    "electron-updater": "^4.3.5",
+    "electron-window-state": "^5.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/color": "^3.0.1",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "@types/webpack-env": "^1.15.3",
+    "arraybuffer-loader": "^1.0.8",
+    "electron": "9.3.3",
+    "electron-builder": "^22.9.1",
+    "electron-webpack": "^2.8.2",
+    "electron-webpack-ts": "^4.0.1",
+    "typescript": "^4.0.3",
+    "webpack": "~4.42.1"
+  }
+}
