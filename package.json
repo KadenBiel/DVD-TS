@@ -7,7 +7,7 @@
     "postinstall": "electron-builder install-app-deps",
     "start": "electron .",
     "build": "electron-builder build --win --x64 --ia32 --publish never",
-    "publish": "electron-builder build --win --x64 --ia32 --publish always"
+    "release": "electron-builder build --win --x64 --ia32 --publish always"
   },
   "repository": {
     "url": "https://github.com/KadenBiel/DVD-TS.git",
