@@ -1,3 +1,5 @@
+const { canvasSizer } = require('canvasSizer');
+
 const electron = require('electron');
 const { autoUpdater } = require('electron-updater');
 const { ProgressInfo } = require('builder-util-runtime');
@@ -12,42 +14,30 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
 
-app.commandLine.appendSwitch('disable-pinch');
-
-function createWindow () {
-	mainWindow = new BrowserWindow({
-	  width: 640,
-	  height: 480,
-	  webPreferences: {
-		nodeIntegration: true,
-	  },
+app.on('ready', () => {
+	let mainWindow = new BrowserWindow({
+		width: 640,
+		height: 480,
+		webPreferences: {
+		  nodeIntegration: true,
+		},
 	});
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'index.html'),
 		protocol: 'file:',
 		slashes: true
 	}));
-	mainWindow.on('closed', function () {
-	  mainWindow = null;
-	});
 	mainWindow.once('ready-to-show', () => {
 		autoUpdater.checkForUpdatesAndNotify();
 	});
-};
-
-app.on('ready', () => {
-	createWindow();
+	mainWindow.on('resized', resize(mainWindow.getSize()[0], mainWindow.getSize()[1]));
 });
+
+app.commandLine.appendSwitch('disable-pinch');
   
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
 	  app.quit();
-	}
-});
-  
-app.on('activate', function () {
-	if (mainWindow === null) {
-	  createWindow();
 	}
 });
   

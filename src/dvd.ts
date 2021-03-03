@@ -5,8 +5,8 @@ var vy = 1;
 var w = 75;
 var h = 54;
 
-var W = 640;
-var H = 480;
+let W = 620;
+let H = 480;
 
 function gcd(a,b) {
     var temp;
@@ -80,35 +80,36 @@ function animate() {
 function draw() {
     var canvas  = document.getElementById("c");
     var context = canvas.getContext("2d");
-    
-    context.clearRect(0, 0, W, H);
+    var width = context.canvas.width;
+    var height = context.canvas.height;
+
+    context.clearRect(0, 0, width, height);
     context.fillStyle = "#000000";
-    context.fillRect(0, 0, W, H);
+    context.fillRect(0, 0, width, height);
     context.fillStyle = "#00ff00";
     context.fillRect(x, y, w, h);
     //context.drawImage(img, x, y, w, h);
 
     // test whether we are in a corner
     if (x == 0 && y == 0) {
-        context.clearRect(0, H, W, 200);
-        context.fillText("TOP LEFT", 10, H+100);
-    } else if (x == 0 && y + h == H) {
-        context.clearRect(0, H, W, 200);
-        context.fillText("BOTTOM LEFT", 10, H+100);
-    } else if (x + w == W && y == 0) {
-        context.clearRect(0, H, W, 200);
+        context.clearRect(0, height, width, 200);
+        context.fillText("TOP LEFT", 10, height+100);
+    } else if (x == 0 && y + h == height) {
+        context.clearRect(0, height, width, 200);
+        context.fillText("BOTTOM LEFT", 10, height+100);
+    } else if (x + w == width && y == 0) {
+        context.clearRect(0, height, width, 200);
         context.fillText("TOP RIGHT", 10, H+100);
-    } else if (x + w == W && y + h == H) {
-        context.clearRect(0, H, W, 200);
+    } else if (x + w == width && y + h == height) {
+        context.clearRect(0, height, width, 200);
         context.fillText("BOTTOM RIGHT", 10, H+100);
     }
 }
 var ctx = document.getElementById("c").getContext("2d");
 ctx.canvas.width = W;
-ctx.canvas.height = H+200;
+ctx.canvas.height = H;
 ctx.font = 'italic 20pt Calibri';
 //var img=document.createElement('image');
 //img.src='http://www.otakia.com/wp-content/uploads/V_1/article_3565/7388.jpg';
-
 
 animate();
