@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/KadenBiel/DVD-TS">
-        <img src="icon.ico" alt="Icon" width="75" height="54"></img>
+        <img src="logo.png" alt="Icon" width="100" height="52"></img>
     </a>
     <h2 align="center">DVD Screen</h2>
     <p align="center">
