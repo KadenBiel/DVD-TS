@@ -1,53 +1,38 @@
-const electron = require('electron');
-const { autoUpdater } = require('electron-updater');
-const { ProgressInfo } = require('builder-util-runtime');
-const windowStateKeeper = require("electron-window-state");
+import { app, BrowserWindow, ipcMain } from 'electron';
+import { autoUpdater } from 'electron-updater';
 const path = require('path');
 const url = require('url');
 
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const ipcMain = electron.ipcMain;
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
 let mainWindow;
 
-app.commandLine.appendSwitch('disable-pinch');
-
-function createWindow () {
-	mainWindow = new BrowserWindow({
-	  width: 640,
-	  height: 480,
-	  webPreferences: {
-		nodeIntegration: true,
-	  },
+app.on('ready', () => {
+	let mainWindow = new BrowserWindow({
+		width: 640,
+		height: 480,
+		webPreferences: {
+		  nodeIntegration: true,
+		},
 	});
 	mainWindow.loadURL(url.format({
 		pathname: path.join(__dirname, 'index.html'),
 		protocol: 'file:',
 		slashes: true
 	}));
-	mainWindow.on('closed', function () {
-	  mainWindow = null;
-	});
 	mainWindow.once('ready-to-show', () => {
 		autoUpdater.checkForUpdatesAndNotify();
 	});
+});
+
+function getWindowSize() {
+	console.log("retrieved size")
+	return mainWindow.getSize()
 };
 
-app.on('ready', () => {
-	createWindow();
-});
-  
+app.commandLine.appendSwitch('disable-pinch');
+
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
 	  app.quit();
-	}
-});
-  
-app.on('activate', function () {
-	if (mainWindow === null) {
-	  createWindow();
 	}
 });
   
@@ -66,3 +51,4 @@ autoUpdater.on('update-downloaded', () => {
 ipcMain.on('restart_app', () => {
 	autoUpdater.quitAndInstall();
 });
+export { getWindowSize }

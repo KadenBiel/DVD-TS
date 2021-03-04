@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron')
+import { ipcRenderer } from 'electron';
 
 const notification = document.getElementById('notification');
 const message = document.getElementById('message');
@@ -24,3 +24,4 @@ function closeNotification() {
 function restartApp() {
     ipcRenderer.send('restart_app');
 }
+export {}

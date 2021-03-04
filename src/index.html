@@ -3,6 +3,7 @@
   <head>
     <link rel="stylesheet" href="mainWindow.css">
     <script src="updater.ts"></script>
+    <script src="main.ts"></script>
   </head>
   <body>
     <div id="notification" class="hidden">
@@ -14,8 +15,11 @@
         Restart
       </button>
     </div>
-    <canvas id="c">
-      <script src="dvd.js"></script>
-    </canvas>
+    <div id="cDiv" class="full">
+      <canvas id="c">
+        <img src="../assets/blue.png" id="dvd">
+        <script src="dvd.ts"></script>
+      </canvas>
+    </div>
   </body>
 </html>
