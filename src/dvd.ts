@@ -4,9 +4,28 @@ var vx = 1;
 var vy = 1;
 var w = 75;
 var h = 54;
+var colors = ['blue', 'green', 'yellow', 'orange', 'purple', 'red']
+var img = document.getElementById('dvd');
 
-let W = 620;
-let H = 480;
+const canDiv = document.getElementById('cDiv');
+
+//get sive of the div containing the canvas
+function getDivSize() {
+    var rect = canDiv.getBoundingClientRect();
+    return [rect.width, rect.height]
+};
+
+//set initial size of the canvas to fill the div
+let size = getDivSize();
+let W = size[0];
+let H = size[1];
+
+//function to set the canvas size while running
+function setCanvasSize(w,h) {
+    var ctx = document.getElementById("c").getContext("2d");
+    ctx.canvas.width = w;
+    ctx.canvas.height = h;
+};
 
 function gcd(a,b) {
     var temp;
@@ -29,11 +48,20 @@ function lcm(a,b) {
 var W0 = W - w;
 var H0 = H - h;
 
+function rand(items) {
+    // "|" for a kinda "int div"
+    return items[items.length * Math.random() | 0];
+}
 
 console.log('W0 ' + W0);
 console.log('H0 ' + H0);
 console.log('gcd ' + gcd(W0, H0));
 console.log('lcm w h ' + lcm(W0, H0));
+
+function newColor() {
+    var nColor = rand(colors)
+    img.src = '../assets/' + nColor + '.png'
+};
 
 if (Math.abs(x-y) % gcd(W0, H0) == 0) {
     // corners will be reached
@@ -56,6 +84,11 @@ if (Math.abs(x-y) % gcd(W0, H0) == 0) {
     
 function animate() {
 
+    //get the size of the div
+    var size = getDivSize();
+    var width = size[0];
+    var height = size[1];
+
     reqAnimFrame = window.mozRequestAnimationFrame    ||
                 window.webkitRequestAnimationFrame ||
                 window.msRequestAnimationFrame     ||
@@ -67,28 +100,40 @@ function animate() {
     for (var i=0;i<1;i++) { // change if you want it to go faster
         x += vx;
         y += vy;
-        if(x+w==W) vx = -vx;
-        if(y+h==H) vy = -vy;
-        if(x==0) vx = -vx;
-        if(y==0) vy = -vy;
-    }
+        if(x+w==width) {
+            vx = -vx;
+            newColor();
+        };
+        if(y+h==height) {
+            vy = -vy;
+            newColor();
+        };
+        if(x==0) {
+            vx = -vx;
+            newColor();
+        };
+        if(y==0) {
+            vy = -vy;
+            newColor();
+        };
+    };
     
-    draw();
-}
+    draw(width, height);
+};
     
     
-function draw() {
+function draw(width, height) {
     var canvas  = document.getElementById("c");
     var context = canvas.getContext("2d");
-    var width = context.canvas.width;
-    var height = context.canvas.height;
+
+    setCanvasSize(width, height);
 
     context.clearRect(0, 0, width, height);
     context.fillStyle = "#000000";
     context.fillRect(0, 0, width, height);
-    context.fillStyle = "#00ff00";
+    context.fillStyle = "#000000";
     context.fillRect(x, y, w, h);
-    //context.drawImage(img, x, y, w, h);
+    context.drawImage(img, x, y, w, h);
 
     // test whether we are in a corner
     if (x == 0 && y == 0) {
@@ -104,12 +149,10 @@ function draw() {
         context.clearRect(0, height, width, 200);
         context.fillText("BOTTOM RIGHT", 10, H+100);
     }
-}
+};
+
 var ctx = document.getElementById("c").getContext("2d");
-ctx.canvas.width = W;
-ctx.canvas.height = H;
+setCanvasSize(W, H);
 ctx.font = 'italic 20pt Calibri';
-//var img=document.createElement('image');
-//img.src='http://www.otakia.com/wp-content/uploads/V_1/article_3565/7388.jpg';
 
 animate();

@@ -1,16 +1,7 @@
-const { canvasSizer } = require('canvasSizer');
-
-const electron = require('electron');
-const { autoUpdater } = require('electron-updater');
-const { ProgressInfo } = require('builder-util-runtime');
-const windowStateKeeper = require("electron-window-state");
+import { app, BrowserWindow, ipcMain } from 'electron';
+import { autoUpdater } from 'electron-updater';
 const path = require('path');
 const url = require('url');
-
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const ipcMain = electron.ipcMain;
-const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow;
 
@@ -30,11 +21,15 @@ app.on('ready', () => {
 	mainWindow.once('ready-to-show', () => {
 		autoUpdater.checkForUpdatesAndNotify();
 	});
-	mainWindow.on('resized', resize(mainWindow.getSize()[0], mainWindow.getSize()[1]));
 });
 
+function getWindowSize() {
+	console.log("retrieved size")
+	return mainWindow.getSize()
+};
+
 app.commandLine.appendSwitch('disable-pinch');
-  
+
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
 	  app.quit();
@@ -56,3 +51,4 @@ autoUpdater.on('update-downloaded', () => {
 ipcMain.on('restart_app', () => {
 	autoUpdater.quitAndInstall();
 });
+export { getWindowSize }
