@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 const path = require('path');
 const url = require('url');
+var updateOnClose = false;
 
 let mainWindow;
 
@@ -32,7 +33,11 @@ app.commandLine.appendSwitch('disable-pinch');
 
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
-	  app.quit();
+		if (updateOnClose) {
+			autoUpdater.quitAndInstall()
+		} else {
+			app.quit();
+		}
 	}
 });
   
@@ -46,6 +51,10 @@ autoUpdater.on('update-available', () => {
 
 autoUpdater.on('update-downloaded', () => {
 	mainWindow.webContents.send('update_downloaded');
+});
+
+ipcMain.on('wait_update', () => {
+	updateOnClose = true
 });
 
 ipcMain.on('restart_app', () => {
