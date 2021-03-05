@@ -1,6 +1,6 @@
 {
   "name": "DVDJS",
-  "version": "0.2.1-beta",
+  "version": "0.2.2-beta",
   "description": "Full-fledged DVD screen saver",
   "main": "src/index.ts",
   "module": "src/main.ts",
@@ -19,7 +19,6 @@
     "email": "kaden.secondday@gmail.com"
   },
   "license": "GPL-3.0-or-later",
-  "type": "module",
   "dependencies": {
     "electron-updater": "^4.3.8",
     "electron-window-state": "^5.0.3",

@@ -2,19 +2,37 @@
 <html>
   <head>
     <link rel="stylesheet" href="mainWindow.css">
-    <script src="updater.ts"></script>
-    <script src="main.ts"></script>
   </head>
   <body>
-    <div id="notification" class="hidden">
-      <p id="message"></p>
-      <button id="close-button" onClick="closeNotification()">
-        Close
-      </button>
-      <button id="restart-button" onClick="restartApp()" class="hidden">
-        Restart
-      </button>
-    </div>
+    <script type="text/javascript">
+      const { ipcRenderer } = require('electron');
+
+      const notification = document.getElementById('notification');
+      const message = document.getElementById('message');
+      const restartButton = document.getElementById('restart-button');
+
+      ipcRenderer.on('update_available', () => {
+        alert('Dowloading new update...')
+      });
+
+      ipcRenderer.on('update_downloaded', () => {
+          ipcRenderer.removeAllListeners('update_downloaded');
+          if (confirm("Update downloaded. Press ok to restart and install.")) {
+            ipcRenderer.send('restart_app')
+          } else {
+            ipcRenderer.send('wait_update')
+          }
+      });
+
+      function closeNotification() {
+        notification.classList.add('hidden');
+      };
+
+      function restartApp() {
+        ipcRenderer.send('restart_app');
+      }
+      export {}
+    </script>
     <div id="cDiv" class="full">
       <canvas id="c">
         <img src="../assets/blue.png" id="dvd">

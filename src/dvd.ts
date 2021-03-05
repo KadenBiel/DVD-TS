@@ -53,11 +53,6 @@ function rand(items) {
     return items[items.length * Math.random() | 0];
 }
 
-console.log('W0 ' + W0);
-console.log('H0 ' + H0);
-console.log('gcd ' + gcd(W0, H0));
-console.log('lcm w h ' + lcm(W0, H0));
-
 function newColor() {
     var nColor = rand(colors)
     img.src = '../assets/' + nColor + '.png'
@@ -77,8 +72,6 @@ if (Math.abs(x-y) % gcd(W0, H0) == 0) {
         console.log('B');
         console.log('R');
     }
-} else {
-    console.log("No corner!");
 }
     
     
