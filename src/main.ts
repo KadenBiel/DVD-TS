@@ -1,5 +1,5 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
+const { app, BrowserWindow, ipcMain } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const url = require('url');
 var updateOnClose = false;
@@ -47,10 +47,12 @@ ipcMain.on('app_version', (event) => {
 
 autoUpdater.on('update-available', () => {
 	mainWindow.webContents.send('update_available');
+	console.log('Update Available')
 });
 
 autoUpdater.on('update-downloaded', () => {
 	mainWindow.webContents.send('update_downloaded');
+	console.log('Update Dowloaded')
 });
 
 ipcMain.on('wait_update', () => {
