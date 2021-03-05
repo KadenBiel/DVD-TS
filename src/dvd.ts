@@ -82,11 +82,7 @@ function animate() {
     var width = size[0];
     var height = size[1];
 
-    reqAnimFrame = window.mozRequestAnimationFrame    ||
-                window.webkitRequestAnimationFrame ||
-                window.msRequestAnimationFrame     ||
-                window.oRequestAnimationFrame
-                ;
+    var reqAnimFrame = window.requestAnimationFrame
     
     reqAnimFrame(animate);
 

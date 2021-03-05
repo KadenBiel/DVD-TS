@@ -1,7 +1,9 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const { autoUpdater } = require('electron-updater');
-const path = require('path');
-const url = require('url');
+'use strict';
+
+import { app, BrowserWindow, ipcMain } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import path from 'path';
+import url from 'url';
 var updateOnClose = false;
 
 let mainWindow;
@@ -53,9 +55,8 @@ autoUpdater.on('update-available', () => {
 autoUpdater.on('update-downloaded', () => {
 	mainWindow.webContents.send('update_downloaded');
 	console.log('Update Dowloaded')
-});
-
-ipcMain.on('restart_app', () => {
+	app.relaunch();
 	autoUpdater.quitAndInstall();
 });
+
 export { getWindowSize }

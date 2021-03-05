@@ -4,20 +4,6 @@
     <link rel="stylesheet" href="mainWindow.css">
   </head>
   <body>
-    <script type="text/javascript">
-      const { ipcRenderer } = require('electron');
-
-      ipcRenderer.on('update_available', () => {
-        alert('Dowloading new update...')
-      });
-
-      ipcRenderer.on('update_downloaded', () => {
-          ipcRenderer.removeAllListeners('update_downloaded');
-          if (confirm("Update downloaded. Press ok to restart and install.")) {
-            ipcRenderer.send('restart_app')
-          }
-      });
-    </script>
     <div id="cDiv" class="full">
       <canvas id="c">
         <img src="../assets/blue.png" id="dvd">
