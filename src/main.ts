@@ -55,10 +55,6 @@ autoUpdater.on('update-downloaded', () => {
 	console.log('Update Dowloaded')
 });
 
-ipcMain.on('wait_update', () => {
-	updateOnClose = true
-});
-
 ipcMain.on('restart_app', () => {
 	autoUpdater.quitAndInstall();
 });

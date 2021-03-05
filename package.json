@@ -1,6 +1,6 @@
 {
   "name": "DVDJS",
-  "version": "0.2.2-beta",
+  "version": "0.2.3-alpha",
   "description": "Full-fledged DVD screen saver",
   "main": "src/index.ts",
   "module": "src/main.ts",
