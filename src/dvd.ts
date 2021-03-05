@@ -9,6 +9,8 @@ var img = document.getElementById('dvd');
 
 const canDiv = document.getElementById('cDiv');
 
+console.log('Update Successful');
+
 //get sive of the div containing the canvas
 function getDivSize() {
     var rect = canDiv.getBoundingClientRect();
