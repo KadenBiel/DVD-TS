@@ -10,12 +10,14 @@
           const ipcRenderer = require('electron');
 
           ipcRenderer.on('update_available', () => {
+            ipcRenderer.removeAllListeners('update_available');
             console.log('update available');
             alert('Update Available!')
           });
 
           ipcRenderer.on('update_dowloaded', () => {
             console.log('update downloaded');
+            ipcRenderer.removeAllListeners('update_dowloaded');
             if (confirm('New update available! Restart the app to install.')) {
               console.log('restart requested')
               ipcRenderer.send('restart-app')
