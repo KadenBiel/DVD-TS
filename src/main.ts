@@ -4,7 +4,6 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import url from 'url';
-var updateOnClose = false;
 
 let mainWindow;
 
@@ -14,6 +13,7 @@ app.on('ready', () => {
 		height: 480,
 		webPreferences: {
 		  nodeIntegration: true,
+		  devTools: false
 		},
 	});
 	mainWindow.loadURL(url.format({
@@ -21,9 +21,13 @@ app.on('ready', () => {
 		protocol: 'file:',
 		slashes: true
 	}));
-	mainWindow.once('ready-to-show', () => {
-		autoUpdater.checkForUpdatesAndNotify();
+
+	mainWindow.webContents.on("devtools-opened", () => {
+		mainWindow.webContents.closeDevTools();
+		console.log('You thought bitch!')
 	});
+
+	autoUpdater.checkForUpdates();
 });
 
 function getWindowSize() {
@@ -35,11 +39,7 @@ app.commandLine.appendSwitch('disable-pinch');
 
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
-		if (updateOnClose) {
-			autoUpdater.quitAndInstall()
-		} else {
-			app.quit();
-		}
+		app.quit();
 	}
 });
   
@@ -55,6 +55,9 @@ autoUpdater.on('update-available', () => {
 autoUpdater.on('update-downloaded', () => {
 	mainWindow.webContents.send('update_downloaded');
 	console.log('Update Dowloaded')
+});
+
+ipcMain.on('restart-app', () => {
 	app.relaunch();
 	autoUpdater.quitAndInstall();
 });

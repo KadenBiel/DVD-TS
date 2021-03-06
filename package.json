@@ -1,6 +1,6 @@
 {
   "name": "DVDJS",
-  "version": "0.2.4-alpha",
+  "version": "1.0.0",
   "description": "Full-fledged DVD screen saver",
   "main": "src/index.ts",
   "module": "src/main.ts",
@@ -21,14 +21,12 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "electron-updater": "^4.3.8",
-    "electron-window-state": "^5.0.3",
     "esm": "^3.2.25",
     "node": "^15.10.0",
-    "requirejs": "^2.3.6",
     "typescript": "^4.2.2"
   },
   "devDependencies": {
-    "electron": "^12.0.0",
+    "electron": "9.4.4",
     "electron-builder": "^22.10.5"
   }
 }
