@@ -1,5 +1,3 @@
-'use strict';
-
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
@@ -8,55 +6,57 @@ const url = require('url');
 let mainWindow;
 
 function createWindow() {
-	let mainWindow = new BrowserWindow({
-		width: 640,
-		height: 480,
-		webPreferences: {
-		  nodeIntegration: true,
-		  devTools: false
-		},
-	});
-	mainWindow.loadURL(url.format({
-		pathname: path.join(__dirname, 'index.html'),
-		protocol: 'file:',
-		slashes: true
-	}));
-
-	mainWindow.webContents.on("devtools-opened", () => {
-		mainWindow.webContents.closeDevTools();
-		console.log('You thought bitch!')
-	});
-
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      devTools: false,
+    },
+  });
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true,
+  }));
+  mainWindow.webContents.on('devtools-opened', () => {
+    mainWindow.webContents.closeDevTools();
+  });
+  mainWindow.on('closed', function () {
+    mainWindow = null;
+  });
 };
 
 app.on('ready', () => {
-	createWindow();
-	autoUpdater.checkForUpdates();
+  createWindow();
+  autoUpdater.checkForUpdates();
 });
 
 app.on('window-all-closed', function () {
-	if (process.platform !== 'darwin') {
-		app.quit();
-	}
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app.on('activate', function () {
-	if (mainWindow === null) {
-	  createWindow();
-	}
+  if (mainWindow === null) {
+    createWindow();
+  }
+});
+
+ipcMain.on('app_version', (event) => {
+  event.sender.send('app_version', { version: app.getVersion() });
 });
 
 autoUpdater.on('update-available', () => {
-	mainWindow.webContents.send('update_available');
-	console.log('Update Available')
+  mainWindow.webContents.send('update_available');
 });
 
 autoUpdater.on('update-downloaded', () => {
-	mainWindow.webContents.send('update_downloaded');
-	console.log('Update Dowloaded')
+  mainWindow.webContents.send('update_downloaded');
 });
 
 ipcMain.on('restart_app', () => {
-	app.relaunch();
-	autoUpdater.quitAndInstall();
+  app.relaunch();
+  autoUpdater.quitAndInstall();
 });

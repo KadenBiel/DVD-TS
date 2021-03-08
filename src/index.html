@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title id="version">Version X.X.X</title>
     <link rel="stylesheet" href="mainWindow.css">
   </head>
   <body>
-    <script>
-      const ipcRenderer = require('electron');
-
-      ipcRenderer.on('update_available', () => {
-        ipcRenderer.removeAllListeners('update_available');
-        console.log('update available');
-        alert('Update Available!')
-      });
-
-      ipcRenderer.on('update_dowloaded', () => {
-        console.log('update downloaded');
-        ipcRenderer.removeAllListeners('update_dowloaded');
-        if (confirm('New update available! Restart the app to install.')) {
-          console.log('restart requested')
-          ipcRenderer.send('restart_app')
-        }
-      });
-    </script>
     <div id="cDiv" class="full">
       <canvas id="c">
         <img src="../assets/blue.png" id="dvd">
         <script src="dvd.ts"></script>
       </canvas>
     </div>
+    <script>
+      const { ipcRenderer } = require('electron');
+      const version = document.getElementById('version');
+      
+      ipcRenderer.send('app_version');
+      ipcRenderer.on('app_version', (event, arg) => {
+        ipcRenderer.removeAllListeners('app_version');
+        version.innerText = 'Version ' + arg.version;
+      });
+  
+      ipcRenderer.on('update_available', () => {
+          ipcRenderer.removeAllListeners('update_available');
+          alert('New update available! downloading now!')
+      });
+      
+      ipcRenderer.on('update_downloaded', () => {
+          ipcRenderer.removeAllListeners('update_downloaded');
+          if(confirm("Restart the app to install the update")) {
+              ipcRenderer.send('restart_app')
+          };
+      });
+    </script>
   </body>
 </html>

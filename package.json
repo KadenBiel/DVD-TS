@@ -1,29 +1,30 @@
 {
-  "name": "DVDJS",
+  "name": "dvdjs",
   "version": "1.0.3",
-  "description": "Full-fledged DVD screen saver",
+  "description": "Full-fledged dvd-screen saver",
   "main": "src/main.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KadenBiel/DVD-TS.git"
+  },
+  "author": "Kaden Biel",
+  "license": "GPL-3.0",
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
     "start": "electron .",
     "build": "electron-builder build --win --x64 --ia32 --publish never",
     "deploy": "electron-builder build --win --x64 --ia32 --publish always"
   },
-  "repository": {
-    "url": "https://github.com/KadenBiel/DVD-TS.git",
-    "type": "git"
-  },
-  "author": {
-    "name": "Kaden",
-    "email": "kaden.secondday@gmail.com"
-  },
-  "license": "GPL-3.0-or-later",
-  "dependencies": {
-    "electron-updater": "^4.3.8",
-    "typescript": "^4.2.2"
-  },
   "devDependencies": {
     "electron": "9.4.4",
-    "electron-builder": "^22.10.5"
-  }
+    "electron-builder": "^22.10.5",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "electron-updater": "^4.3.8"
+  },
+  "bugs": {
+    "url": "https://github.com/KadenBiel/DVD-TS/issues"
+  },
+  "homepage": "https://github.com/KadenBiel/DVD-TS#readme"
 }
