@@ -5,6 +5,75 @@ const url = require('url');
 
 let mainWindow;
 
+const mainTemplate = [
+  {
+    label: 'DVD Menu',
+    submenu: [
+      {
+        label: 'Exit',
+        click: function() {
+          app.quit()
+        }
+      },
+      {
+        label: 'Restart',
+        click: function() {
+          app.relaunch()
+          app.quit()
+        }
+      },
+      {
+        label: 'Check For Updates',
+        click: function() {
+          autoUpdater.checkForUpdates()
+        }
+      },
+      {
+        label: 'Open Settings',
+        click: function() {
+          openSettings()
+        }
+      }
+    ]
+  }
+]
+
+const settingsTemplate = [
+  {
+    label: 'DVD Menu',
+    submenu: [
+      {
+        label: 'Exit',
+        click: function() {
+          app.quit()
+        }
+      },
+      {
+        label: 'Restart',
+        click: function() {
+          app.relaunch()
+          app.quit()
+        }
+      },
+      {
+        label: 'Check For Updates',
+        click: function() {
+          autoUpdater.checkForUpdates()
+        }
+      },
+      {
+        label: 'Close Settings',
+        click: function() {
+          closeSettings()
+        }
+      }
+    ]
+  }
+]
+
+const mainMenu = Menu.buildFromTemplate(mainTemplate);
+const settingsMenu = Menu.buildFromTemplate(settingsTemplate);
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
@@ -26,42 +95,6 @@ function createWindow() {
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
-
-  var template = [
-    {
-      label: 'DVD Menu',
-      submenu: [
-        {
-          label: 'Exit',
-          click: function() {
-            app.quit()
-          }
-        },
-        {
-          label: 'Restart',
-          click: function() {
-            app.relaunch()
-            app.quit()
-          }
-        },
-        {
-          label: 'Check For Updates',
-          click: function() {
-            autoUpdater.checkForUpdates()
-          }
-        },
-        {
-          label: 'Open Settings',
-          click: function() {
-            openSettings()
-          }
-        }
-      ]
-    }
-  ]
-
-  var menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
 };
 
 function openSettings() {
@@ -72,41 +105,7 @@ function openSettings() {
     slashes: true,
   }));
 
-  var template = [
-    {
-      label: 'DVD Menu',
-      submenu: [
-        {
-          label: 'Exit',
-          click: function() {
-            app.quit()
-          }
-        },
-        {
-          label: 'Restart',
-          click: function() {
-            app.relaunch()
-            app.quit()
-          }
-        },
-        {
-          label: 'Check For Updates',
-          click: function() {
-            autoUpdater.checkForUpdates()
-          }
-        },
-        {
-          label: 'Close Settings',
-          click: function() {
-            closeSettings()
-          }
-        }
-      ]
-    }
-  ]
-
-  var menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
+  Menu.setApplicationMenu(settingsMenu)
 }
 
 function closeSettings() {
@@ -117,82 +116,14 @@ function closeSettings() {
     slashes: true,
   }));
 
-  var template = [
-    {
-      label: 'DVD Menu',
-      submenu: [
-        {
-          label: 'Exit',
-          click: function() {
-            app.quit()
-          }
-        },
-        {
-          label: 'Restart',
-          click: function() {
-            app.relaunch()
-            app.quit()
-          }
-        },
-        {
-          label: 'Check For Updates',
-          click: function() {
-            autoUpdater.checkForUpdates()
-          }
-        },
-        {
-          label: 'Open Settings',
-          click: function() {
-            openSettings()
-          }
-        }
-      ]
-    }
-  ]
-
+  Menu.setApplicationMenu(mainMenu)
 }
 
 app.setUserTasks([]);
 
 app.on('ready', () => {
   createWindow();
-
-  var template = [
-    {
-      label: 'DVD Menu',
-      submenu: [
-        {
-          label: 'Exit',
-          click: function() {
-            app.quit()
-          }
-        },
-        {
-          label: 'Restart',
-          click: function() {
-            app.relaunch()
-            app.quit()
-          }
-        },
-        {
-          label: 'Check For Updates',
-          click: function() {
-            autoUpdater.checkForUpdates()
-          }
-        },
-        {
-          label: 'Open Settings',
-          click: function() {
-            openSettings()
-          }
-        }
-      ]
-    }
-  ]
-
-  var menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
-
+  Menu.setApplicationMenu(mainMenu);
   autoUpdater.checkForUpdates();
 });
 
