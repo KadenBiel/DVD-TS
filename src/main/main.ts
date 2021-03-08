@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const url = require('url');
@@ -14,6 +14,7 @@ function createWindow() {
       //devTools: false,
     },
   });
+  mainWindow.setThumbarButtons([])
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, '../renderer/index.html'),
     protocol: 'file:',
@@ -25,10 +26,173 @@ function createWindow() {
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
+
+  var template = [
+    {
+      label: 'DVD Menu',
+      submenu: [
+        {
+          label: 'Exit',
+          click: function() {
+            app.quit()
+          }
+        },
+        {
+          label: 'Restart',
+          click: function() {
+            app.relaunch()
+            app.quit()
+          }
+        },
+        {
+          label: 'Check For Updates',
+          click: function() {
+            autoUpdater.checkForUpdates()
+          }
+        },
+        {
+          label: 'Open Settings',
+          click: function() {
+            openSettings()
+          }
+        }
+      ]
+    }
+  ]
+
+  var menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 };
+
+function openSettings() {
+  console.log('open settings')
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, '../renderer/settings/settings.html'),
+    protocol: 'file:',
+    slashes: true,
+  }));
+
+  var template = [
+    {
+      label: 'DVD Menu',
+      submenu: [
+        {
+          label: 'Exit',
+          click: function() {
+            app.quit()
+          }
+        },
+        {
+          label: 'Restart',
+          click: function() {
+            app.relaunch()
+            app.quit()
+          }
+        },
+        {
+          label: 'Check For Updates',
+          click: function() {
+            autoUpdater.checkForUpdates()
+          }
+        },
+        {
+          label: 'Close Settings',
+          click: function() {
+            closeSettings()
+          }
+        }
+      ]
+    }
+  ]
+
+  var menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+}
+
+function closeSettings() {
+  console.log ('close settings')
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, '../renderer/index.html'),
+    protocol: 'file:',
+    slashes: true,
+  }));
+
+  var template = [
+    {
+      label: 'DVD Menu',
+      submenu: [
+        {
+          label: 'Exit',
+          click: function() {
+            app.quit()
+          }
+        },
+        {
+          label: 'Restart',
+          click: function() {
+            app.relaunch()
+            app.quit()
+          }
+        },
+        {
+          label: 'Check For Updates',
+          click: function() {
+            autoUpdater.checkForUpdates()
+          }
+        },
+        {
+          label: 'Open Settings',
+          click: function() {
+            openSettings()
+          }
+        }
+      ]
+    }
+  ]
+
+}
+
+app.setUserTasks([]);
 
 app.on('ready', () => {
   createWindow();
+
+  var template = [
+    {
+      label: 'DVD Menu',
+      submenu: [
+        {
+          label: 'Exit',
+          click: function() {
+            app.quit()
+          }
+        },
+        {
+          label: 'Restart',
+          click: function() {
+            app.relaunch()
+            app.quit()
+          }
+        },
+        {
+          label: 'Check For Updates',
+          click: function() {
+            autoUpdater.checkForUpdates()
+          }
+        },
+        {
+          label: 'Open Settings',
+          click: function() {
+            openSettings()
+          }
+        }
+      ]
+    }
+  ]
+
+  var menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+
   autoUpdater.checkForUpdates();
 });
 

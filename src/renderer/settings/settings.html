@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="settings.css">
     </head>
     <body>
-        <script>
+        <!--<script>
             const { ipcRenderer } = require('electron');
             const version = document.getElementById('version');
       
@@ -14,10 +14,24 @@
                 ipcRenderer.removeAllListeners('app_version');
                 version.innerText = 'DVD Screen v' + arg.version;
             });
-        </script>
-        <script src='settings.ts'></script>
+        </script>-->
         <div class='settings'>
-            <input type='range' min='1' max='20' value='50' class='slide'>
+            <p id='speedP'>DVD Speed: 1</p>
+            <input type='range' oninput="changeSpeed()" id='speed' min='1' max='100' value='1' class='slide'>
+            <p id='sizeP'>DVD Size: 54px</p>
+            <input type='range' oninput="changeSize()" id='size' min='10' max='200' value='54' class='slide'>
+            <p>Colors:</p>
+            <input type='color' oninput="changeColor0()" class="color" id='color0' value="#0079fe">
+            <input type='color' oninput="changeColor1()" class="color" id='color1' value="#0ed145">
+            <input type='color' oninput="changeColor2()" class="color" id='color2' value="#ff7f27">
+            <input type='color' oninput="changeColor3()" class="color" id='color3' value="#b83dba">
+            <input type='color' oninput="changeColor4()" class="color" id='color4' value="#ec1c24">
+            <input type='color' oninput="changeColor5()" class="color" id='color5' value="#fff200">
+            <input type='color' oninput="changeColor6()" class="color" id='color6' value="#ff71ff">
+            <input type='color' oninput="changeColor7()" class="color" id='color7' value="#ffffff">
+            <p>Retore to Defaults:</p>
+            <input type='button' onclick='restore()' value='Reset'>
         </div>
+        <script src="setting.ts"></script>
     </body>
 </html>

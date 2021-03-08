@@ -2,8 +2,8 @@ var x = 0;
 var y = 0;
 var vx = 1;
 var vy = 1;
-var w = 75;
-var h = 54;
+var w = 200;
+var h = 180;
 var colors = ['blue', 'green', 'yellow', 'orange', 'purple', 'red']
 var img = document.getElementById('dvd');
 

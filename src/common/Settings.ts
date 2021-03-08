@@ -1,5 +1,6 @@
 export interface Settings {
     speed: number;
+    size: number;
     color0: string;
     color1: string;
     color2: string;
@@ -8,5 +9,4 @@ export interface Settings {
     color5: string;
     color6: string;
     color7: string;
-    size: number
 }

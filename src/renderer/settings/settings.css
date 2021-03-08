@@ -1,3 +1,66 @@
+@font-face {
+    font-family: 'dvd-plain';
+    src: url('dvdfont-webfont.woff2') format('woff2'),
+         url('dvdfont-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
 * {
-    background: #000;
+    background: #000000;
+    color: #FFFFFF;
+    font-family: 'dvd-plain';
+    font-size: 18px;
+}
+
+.settings {
+    width: 100%;
+}
+
+.color{
+    -webkit-appearance: none;
+    border: none;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 2.5%;
+    margin-top: 2.5%;
+}
+
+.color::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color::-webkit-color-swatch {
+    width: 25px;
+    height: 25px;
+    border-radius: 25px;
+}
+
+.slide {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    border-radius: 5px;
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 15px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+  }
+
+.slide::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #0079FE;
+    cursor: pointer;
+}
+
+.slide:hover {
+    opacity: 1;
 }
