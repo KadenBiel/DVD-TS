@@ -1,9 +1,9 @@
 'use strict';
 
-import { app, BrowserWindow, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import path from 'path';
-import url from 'url';
+const { app, BrowserWindow, ipcMain } = require('electron');
+const { autoUpdater } = require('electron-updater');
+const path = require('path');
+const url = require('url');
 
 let mainWindow;
 
@@ -60,5 +60,3 @@ ipcMain.on('restart_app', () => {
 	app.relaunch();
 	autoUpdater.quitAndInstall();
 });
-
-export { createWindow }
