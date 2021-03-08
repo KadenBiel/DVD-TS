@@ -11,7 +11,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      devTools: false,
+      //devTools: false,
     },
   });
   mainWindow.loadURL(url.format({
@@ -19,12 +19,17 @@ function createWindow() {
     protocol: 'file:',
     slashes: true,
   }));
-  mainWindow.webContents.on('devtools-opened', () => {
+  /*mainWindow.webContents.on('devtools-opened', () => {
     mainWindow.webContents.closeDevTools();
-  });
+  });*/
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
+};
+
+function restart() {
+  app.relaunch();
+  autoUpdater.quitAndInstall();
 };
 
 app.on('ready', () => {
@@ -54,9 +59,5 @@ autoUpdater.on('update-available', () => {
 
 autoUpdater.on('update-downloaded', () => {
   mainWindow.webContents.send('update_downloaded');
-});
-
-ipcMain.on('restart_app', () => {
-  app.relaunch();
-  autoUpdater.quitAndInstall();
+  setTimeout(restart, 3000)
 });
