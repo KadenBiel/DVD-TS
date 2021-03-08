@@ -7,7 +7,7 @@ import url from 'url';
 
 let mainWindow;
 
-app.on('ready', () => {
+function createWindow() {
 	let mainWindow = new BrowserWindow({
 		width: 640,
 		height: 480,
@@ -27,24 +27,23 @@ app.on('ready', () => {
 		console.log('You thought bitch!')
 	});
 
-	autoUpdater.checkForUpdates();
-});
-
-function getWindowSize() {
-	console.log("retrieved size")
-	return mainWindow.getSize()
 };
 
-app.commandLine.appendSwitch('disable-pinch');
+app.on('ready', () => {
+	createWindow();
+	autoUpdater.checkForUpdates();
+});
 
 app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
 });
-  
-ipcMain.on('app_version', (event) => {
-	event.sender.send('app_version', { version: app.getVersion() });
+
+app.on('activate', function () {
+	if (mainWindow === null) {
+	  createWindow();
+	}
 });
 
 autoUpdater.on('update-available', () => {
@@ -57,9 +56,9 @@ autoUpdater.on('update-downloaded', () => {
 	console.log('Update Dowloaded')
 });
 
-ipcMain.on('restart-app', () => {
+ipcMain.on('restart_app', () => {
 	app.relaunch();
 	autoUpdater.quitAndInstall();
 });
 
-export { getWindowSize }
+export { createWindow }
