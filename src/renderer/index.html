@@ -7,7 +7,7 @@
   <body>
     <div id="cDiv" class="full">
       <canvas id="c">
-        <img src="../assets/blue.png" id="dvd">
+        <img src="../../assets/blue.png" id="dvd">
         <script src="dvd.ts"></script>
       </canvas>
     </div>
@@ -28,7 +28,9 @@
       
       ipcRenderer.on('update_downloaded', () => {
           ipcRenderer.removeAllListeners('update_downloaded');
-          alert('Updated Downloaded, restarting...')
+          if(confirm("Update downloaded. Hit OK to restart and install the update.")) {
+            ipcRenderer.send('restart_app')
+          }
       });
     </script>
   </body>

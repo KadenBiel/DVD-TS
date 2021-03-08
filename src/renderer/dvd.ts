@@ -57,7 +57,7 @@ function rand(items) {
 
 function newColor() {
     var nColor = rand(colors)
-    img.src = '../assets/' + nColor + '.png'
+    img.src = '../../assets/' + nColor + '.png'
 };
 
 if (Math.abs(x-y) % gcd(W0, H0) == 0) {

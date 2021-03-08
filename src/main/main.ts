@@ -11,25 +11,20 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      devTools: false,
+      //devTools: false,
     },
   });
   mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
+    pathname: path.join(__dirname, '../renderer/index.html'),
     protocol: 'file:',
     slashes: true,
   }));
-  mainWindow.webContents.on('devtools-opened', () => {
+  /*mainWindow.webContents.on('devtools-opened', () => {
     mainWindow.webContents.closeDevTools();
-  });
+  });*/
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
-};
-
-function restart() {
-  app.relaunch();
-  autoUpdater.quitAndInstall();
 };
 
 app.on('ready', () => {
@@ -59,5 +54,9 @@ autoUpdater.on('update-available', () => {
 
 autoUpdater.on('update-downloaded', () => {
   mainWindow.webContents.send('update_downloaded');
-  setTimeout(restart, 3000)
+});
+
+ipcMain.on('restart_app', () => {
+  app.relaunch();
+  autoUpdater.quitAndInstall();
 });
