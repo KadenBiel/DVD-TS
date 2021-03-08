@@ -1,5 +1,11 @@
-const { app, BrowserWindow, ipcMain, Menu, electron } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
+const {
+  GET_TEXT_FROM_STORAGE,
+  SAVE_TEXT_TO_STORAGE,
+  HANDLE_GET_TEXT_FROM_STORAGE,
+  HANDLE_SAVE_TEXT_TO_STORAGE
+} = require('../common/constants')
 const path = require('path');
 const url = require('url');
 
@@ -42,25 +48,25 @@ const mainTemplate = [
       {
         label: 'Report a Bug',
         click: function() {
-          electron.shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
         }
       },
       {
         label: 'Ask a Question',
         click: function() {
-          electron.shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
         }
       },
       {
         label: 'Github',
         click: function() {
-          electron.shell.openExternal('https://github.com/KadenBiel/DVD-TS')
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS')
         }
       },
       {
         label: 'Discord',
         click: function() {
-          electron.shell.openExternal('https://discord.gg/t76fzaYJcr')
+          shell.openExternal('https://discord.gg/t76fzaYJcr')
         }
       }
     ]
@@ -152,7 +158,21 @@ function closeSettings() {
   Menu.setApplicationMenu(mainMenu)
 }
 
-app.setUserTasks([]);
+ipcMain.on(GET_TEXT_FROM_STORAGE, () => {
+  //Get the text from storage
+})
+
+ipcMain.on(SAVE_TEXT_TO_STORAGE, () => {
+  //Save the text to storage
+})
+
+ipcMain.on(HANDLE_GET_TEXT_FROM_STORAGE, () => {
+  //Handle getting the text from storage
+})
+
+ipcMain.on(HANDLE_SAVE_TEXT_TO_STORAGE, () => {
+  //Handle saving the text to storage
+})
 
 app.on('ready', () => {
   createWindow();
