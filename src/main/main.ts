@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, electron } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const url = require('url');
@@ -35,6 +35,35 @@ const mainTemplate = [
         }
       }
     ]
+  },
+  {
+    label: 'Help',
+    submenu: [
+      {
+        label: 'Report a Bug',
+        click: function() {
+          electron.shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
+        }
+      },
+      {
+        label: 'Ask a Question',
+        click: function() {
+          electron.shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
+        }
+      },
+      {
+        label: 'Github',
+        click: function() {
+          electron.shell.openExternal('https://github.com/KadenBiel/DVD-TS')
+        }
+      },
+      {
+        label: 'Discord',
+        click: function() {
+          electron.shell.openExternal('https://discord.gg/t76fzaYJcr')
+        }
+      }
+    ]
   }
 ]
 
@@ -59,6 +88,10 @@ const settingsTemplate = [
         label: 'Check For Updates',
         click: function() {
           autoUpdater.checkForUpdates()
+          autoUpdater.on('update-not-available', () => {
+            autoUpdater.removeAllListeners('update-not-available');
+            mainWindow.webContents.send('update_not_available')
+          })
         }
       },
       {

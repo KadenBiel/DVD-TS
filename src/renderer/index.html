@@ -25,6 +25,10 @@
           ipcRenderer.removeAllListeners('update_available');
           alert('New update available! downloading now!')
       });
+
+      ipcRenderer.on('update_not_available', () => {
+          alert('No new updates available')
+      });
       
       ipcRenderer.on('update_downloaded', () => {
           ipcRenderer.removeAllListeners('update_downloaded');
