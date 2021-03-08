@@ -11,7 +11,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      //devTools: false,
+      devTools: false,
     },
   });
   mainWindow.loadURL(url.format({
@@ -19,9 +19,9 @@ function createWindow() {
     protocol: 'file:',
     slashes: true,
   }));
-  /*mainWindow.webContents.on('devtools-opened', () => {
+  mainWindow.webContents.on('devtools-opened', () => {
     mainWindow.webContents.closeDevTools();
-  });*/
+  });
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
