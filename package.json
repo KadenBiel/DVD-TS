@@ -1,8 +1,8 @@
 {
   "name": "dvdjs",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Full-fledged dvd-screen saver",
-  "main": "src/main.ts",
+  "main": "src/main/main.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/KadenBiel/DVD-TS.git"
@@ -21,6 +21,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
+    "electron-store": "^7.0.2",
     "electron-updater": "^4.3.8"
   },
   "bugs": {
