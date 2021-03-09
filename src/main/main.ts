@@ -1,13 +1,10 @@
 const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
-const {
-  GET_TEXT_FROM_STORAGE,
-  SAVE_TEXT_TO_STORAGE,
-  HANDLE_GET_TEXT_FROM_STORAGE,
-  HANDLE_SAVE_TEXT_TO_STORAGE
-} = require('../common/constants')
+const Store = require('electron-store');
 const path = require('path');
 const url = require('url');
+
+const store = new Store();
 
 let mainWindow;
 
@@ -119,7 +116,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      //devTools: false,
+      devTools: true,
     },
   });
   mainWindow.setThumbarButtons([])
@@ -158,22 +155,6 @@ function closeSettings() {
   Menu.setApplicationMenu(mainMenu)
 }
 
-ipcMain.on(GET_TEXT_FROM_STORAGE, () => {
-  //Get the text from storage
-})
-
-ipcMain.on(SAVE_TEXT_TO_STORAGE, () => {
-  //Save the text to storage
-})
-
-ipcMain.on(HANDLE_GET_TEXT_FROM_STORAGE, () => {
-  //Handle getting the text from storage
-})
-
-ipcMain.on(HANDLE_SAVE_TEXT_TO_STORAGE, () => {
-  //Handle saving the text to storage
-})
-
 app.on('ready', () => {
   createWindow();
   Menu.setApplicationMenu(mainMenu);
@@ -192,10 +173,6 @@ app.on('activate', function () {
   }
 });
 
-ipcMain.on('app_version', (event) => {
-  event.sender.send('app_version', { version: app.getVersion() });
-});
-
 autoUpdater.on('update-available', () => {
   mainWindow.webContents.send('update_available');
 });
@@ -204,7 +181,44 @@ autoUpdater.on('update-downloaded', () => {
   mainWindow.webContents.send('update_downloaded');
 });
 
+ipcMain.on('app_version', (event) => {
+  event.sender.send('app_version', { version: app.getVersion() });
+});
+
 ipcMain.on('restart_app', () => {
   app.relaunch();
   autoUpdater.quitAndInstall();
+});
+
+ipcMain.on('get-settings', (event) => {
+  let noError = true;
+  let dspeed = '1';
+  let size = '50';
+  size = store.get('size');
+  dspeed = store.get('speed');
+  if (!size) size = '50';
+  if (!dspeed) dspeed = '1';
+  event.sender.send('send-settings', {
+    success: noError,
+    dvdSpeed: parseInt(dspeed),
+    size: parseInt(size),
+    /*color0: '#0079fe',
+    color1: '#0ed145',
+    color2: '#ff7f27',
+    color3: '#b83dba',
+    color4: '#ec1c24',
+    color5: '#fff200',
+    color6: '#ff71ff',
+    color7: '#ffffff'*/
+  })
+});
+
+ipcMain.on('save-settings', (event, settings) => {
+  let noError = true;
+  store.set('size', settings.size.toString());
+  store.set('speed', settings.speed.toString());
+  event.sender.send('saved-settings', {
+    success: noError,
+  })
+  closeSettings();
 });

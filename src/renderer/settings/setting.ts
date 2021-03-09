@@ -11,6 +11,22 @@ const color5 = document.getElementById('color5');
 const color6 = document.getElementById('color6');
 const color7 = document.getElementById('color7');*/
 
+const { ipcRenderer } = require('electron');
+const version = document.getElementById('version');
+      
+ipcRenderer.send('app_version');
+ipcRenderer.on('app_version', (event, arg) => {
+    ipcRenderer.removeAllListeners('app_version');
+    version.innerText = 'DVD Screen v' + arg.version;
+});
+
+ipcRenderer.send('get-settings')
+ipcRenderer.on('send-settings', (event, settings) => {
+    dvdSize.value = settings.size;
+    speed.value = settings.dvdSpeed;
+    changeAll();
+});
+
 function changeSpeed() {
     speedP.innerText = "DVD Speed: "+speed.value;
 }
@@ -76,4 +92,11 @@ function restore() {
     color6.value = "#ff71ff";
     color7.value = "#ffffff";*/
     changeAll();
+}
+
+function save() {
+    ipcRenderer.send('save-settings', {
+        size: dvdSize.value,
+        speed: speed.value,
+    });
 }
