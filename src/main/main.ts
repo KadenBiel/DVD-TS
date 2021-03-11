@@ -27,6 +27,9 @@ const mainTemplate = [
         }
       },
       {
+        role: 'reload'
+      },
+      {
         label: 'Open Settings',
         click: function() {
           openSettings()
@@ -84,6 +87,9 @@ const settingsTemplate = [
           app.relaunch()
           app.quit()
         }
+      },
+      {
+        role: 'reload'
       },
       {
         label: 'Close Settings',
