@@ -7,16 +7,14 @@ const url = require('url');
 const store = new Store();
 
 let mainWindow;
+let update = false;
 
 const mainTemplate = [
   {
     label: 'DVD Menu',
     submenu: [
       {
-        label: 'Exit',
-        click: function() {
-          app.quit()
-        }
+        role: 'quit'
       },
       {
         label: 'Restart',
@@ -26,16 +24,16 @@ const mainTemplate = [
         }
       },
       {
-        label: 'Check For Updates',
-        click: function() {
-          autoUpdater.checkForUpdates()
-        }
+        role: 'reload'
       },
       {
         label: 'Open Settings',
         click: function() {
           openSettings()
         }
+      },
+      {
+        role: 'togglefullscreen'
       }
     ]
   },
@@ -65,6 +63,12 @@ const mainTemplate = [
         click: function() {
           shell.openExternal('https://discord.gg/t76fzaYJcr')
         }
+      },
+      {
+        label: 'Change log',
+        click: function() {
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS/CHANGELOG.md')
+        }
       }
     ]
   }
@@ -75,10 +79,7 @@ const settingsTemplate = [
     label: 'DVD Menu',
     submenu: [
       {
-        label: 'Exit',
-        click: function() {
-          app.quit()
-        }
+        role: 'quit'
       },
       {
         label: 'Restart',
@@ -88,20 +89,16 @@ const settingsTemplate = [
         }
       },
       {
-        label: 'Check For Updates',
-        click: function() {
-          autoUpdater.checkForUpdates()
-          autoUpdater.on('update-not-available', () => {
-            autoUpdater.removeAllListeners('update-not-available');
-            mainWindow.webContents.send('update_not_available')
-          })
-        }
+        role: 'reload'
       },
       {
         label: 'Close Settings',
         click: function() {
           closeSettings()
         }
+      },
+      {
+        role: 'togglefullscreen'
       }
     ]
   }
@@ -158,6 +155,9 @@ function closeSettings() {
 app.on('ready', () => {
   createWindow();
   Menu.setApplicationMenu(mainMenu);
+  /*mainWindow.webContents.openDevTools({
+    mode: 'detach',
+  });*/
   autoUpdater.checkForUpdates();
 });
 
@@ -175,6 +175,7 @@ app.on('activate', function () {
 
 autoUpdater.on('update-available', () => {
   mainWindow.webContents.send('update_available');
+  update = true;
 });
 
 autoUpdater.on('update-downloaded', () => {
@@ -182,7 +183,7 @@ autoUpdater.on('update-downloaded', () => {
 });
 
 ipcMain.on('app_version', (event) => {
-  event.sender.send('app_version', { version: app.getVersion() });
+  event.sender.send('app_version', { version: app.getVersion(), url: autoUpdater.getFeedURL() });
 });
 
 ipcMain.on('restart_app', () => {

@@ -22,6 +22,7 @@ ipcRenderer.on('app_version', (event, arg) => {
 
 ipcRenderer.send('get-settings')
 ipcRenderer.on('send-settings', (event, settings) => {
+    ipcRenderer.removeAllListeners('send-settings');
     dvdSize.value = settings.size;
     speed.value = settings.dvdSpeed;
     changeAll();

@@ -3,20 +3,17 @@ const version = document.getElementById('version');
 
 ipcRenderer.send('app_version');
 ipcRenderer.on('app_version', (event, arg) => {
-ipcRenderer.removeAllListeners('app_version');
+    ipcRenderer.removeAllListeners('app_version');
     version.innerText = 'DVD Screen v' + arg.version;
+    console.log(arg.url);
 });
   
 ipcRenderer.on('update_available', () => {
     ipcRenderer.removeAllListeners('update_available');
     alert('New update available! downloading now!')
 });
-
-ipcRenderer.on('update_not_available', () => {
-    alert('No new updates available')
-});
       
-ipcRenderer.on('update_downloaded', () => {
+ipcRenderer.on('update_downloaded', (info) => {
     ipcRenderer.removeAllListeners('update_downloaded');
     if(confirm("Update downloaded. Hit OK to restart and install the update.")) {
         ipcRenderer.send('restart_app')
@@ -25,19 +22,26 @@ ipcRenderer.on('update_downloaded', () => {
 
 ipcRenderer.send('get-settings')
 ipcRenderer.on('send-settings', (event, settings) => {
+    ipcRenderer.removeAllListeners('send-settings');
     var h = settings.size;
     var w = Math.round(h/(2/3));
     var dS = settings.dvdSpeed;
     startDvd(w,h,dS);
 });
 
-function startDvd(w,h,dS) {
-    var x = 0;
-    var y = 0;
+function startDvd(w,h,dS) {    
+    let x = 0;
+    let y = 0;
     var vx = 1;
     var vy = 1;
     var colors = ['blue', 'green', 'yellow', 'orange', 'purple', 'red']
     var img = document.getElementById('dvd');
+
+    ipcRenderer.on('resize', () => {
+        console.log('resize')
+        size = getDivSize();
+        
+    });
 
     const canDiv = document.getElementById('cDiv');
     const ctx = document.getElementById("c").getContext("2d");
@@ -135,6 +139,12 @@ function startDvd(w,h,dS) {
             if(y==0) {
                 vy = -vy;
                 newColor();
+            };
+            if (x+w > width) {
+                x = width-w-1
+            };
+            if (y+h > height) {
+                y = height-h-1
             };
         };
     
