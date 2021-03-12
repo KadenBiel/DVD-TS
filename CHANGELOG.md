@@ -84,15 +84,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Green rectangle bounces around canvas in similar fashion to DVD screen saver
 - HTML canvas doesn't fill whole screen
 
-[UNRELEASED](https://github.com/KadenBiel/DVD-TS/compare/v1.1.1...HEAD)
-[1.1.1](https://github.com/KadenBiel/DVD-TS/compare/v1.1.0...v1.1.1)
-[1.1.0](https://github.com/KadenBiel/DVD-TS/compare/v1.0.5...v1.1.0)
-[1.0.5](https://github.com/KadenBiel/DVD-TS/compare/v1.0.0...v1.0.5)
-[1.0.0](https://github.com/KadenBiel/DVD-TS/compare/v0.2.4-beta...v1.0.0)
-[0.2.4-beta](https://github.com/KadenBiel/DVD-TS/compare/v0.2.4-alpha...v0.2.4-beta)
-[0.2.4-alpha](https://github.com/KadenBiel/DVD-TS/compare/v0.2.3-beta...v0.2.4-alpha)
-[0.2.3-beta](https://github.com/KadenBiel/DVD-TS/compare/v0.2.3-alpha...v0.2.3-beta)
-[0.2.3-alpha](https://github.com/KadenBiel/DVD-TS/compare/v0.2.2-beta...v0.2.3-alpha)
-[0.2.2-beta](https://github.com/KadenBiel/DVD-TS/compare/v0.2.1-beta...v0.2.2-beta)
-[0.2.1-beta](https://github.com/KadenBiel/DVD-TS/compare/v0.0.1-beta...v0.2.1-beta)
-[0.0.1-beta](https://github.com/KadenBiel/DVD-TS/releases/tag/v0.0.1-beta)
+[UNRELEASED]: https://github.com/KadenBiel/DVD-TS/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/KadenBiel/DVD-TS/compare/v1.1.0...v1.1.1
+[1.1.0]: https://github.com/KadenBiel/DVD-TS/compare/v1.0.5...v1.1.0
+[1.0.5]: https://github.com/KadenBiel/DVD-TS/compare/v1.0.0...v1.0.5
+[1.0.0]: https://github.com/KadenBiel/DVD-TS/compare/v0.2.4-beta...v1.0.0
+[0.2.4-beta]: https://github.com/KadenBiel/DVD-TS/compare/v0.2.4-alpha...v0.2.4-beta
+[0.2.4-alpha]: https://github.com/KadenBiel/DVD-TS/compare/v0.2.3-beta...v0.2.4-alpha
+[0.2.3-beta]: https://github.com/KadenBiel/DVD-TS/compare/v0.2.3-alpha...v0.2.3-beta
+[0.2.3-alpha]: https://github.com/KadenBiel/DVD-TS/compare/v0.2.2-beta...v0.2.3-alpha
+[0.2.2-beta]: https://github.com/KadenBiel/DVD-TS/compare/v0.2.1-beta...v0.2.2-beta
+[0.2.1-beta]: https://github.com/KadenBiel/DVD-TS/compare/v0.0.1-beta...v0.2.1-beta
+[0.0.1-beta]: https://github.com/KadenBiel/DVD-TS/releases/tag/v0.0.1-beta
