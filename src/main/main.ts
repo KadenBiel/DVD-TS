@@ -14,10 +14,7 @@ const mainTemplate = [
     label: 'DVD Menu',
     submenu: [
       {
-        label: 'Exit',
-        click: function() {
-          app.quit()
-        }
+        role: 'quit'
       },
       {
         label: 'Restart',
@@ -66,6 +63,12 @@ const mainTemplate = [
         click: function() {
           shell.openExternal('https://discord.gg/t76fzaYJcr')
         }
+      },
+      {
+        label: 'Change log',
+        click: function() {
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS/CHANGELOG.md')
+        }
       }
     ]
   }
@@ -76,10 +79,7 @@ const settingsTemplate = [
     label: 'DVD Menu',
     submenu: [
       {
-        label: 'Exit',
-        click: function() {
-          app.quit()
-        }
+        role: 'quit'
       },
       {
         label: 'Restart',
