@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2021-03-15
+### Added
+- New settings lock ability
+
 ## [1.1.1] - 2021-03-10
 ### Added
 - DVD logo will remain within the screen boundries if resized
@@ -84,7 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Green rectangle bounces around canvas in similar fashion to DVD screen saver
 - HTML canvas doesn't fill whole screen
 
-[UNRELEASED]: https://github.com/KadenBiel/DVD-TS/compare/v1.1.1...HEAD
+[UNRELEASED]: https://github.com/KadenBiel/DVD-TS/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/KadenBiel/DVD-TS/compare/v1.1.1...v1.2.1
 [1.1.1]: https://github.com/KadenBiel/DVD-TS/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/KadenBiel/DVD-TS/compare/v1.0.5...v1.1.0
 [1.0.5]: https://github.com/KadenBiel/DVD-TS/compare/v1.0.0...v1.0.5
