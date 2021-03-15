@@ -5,7 +5,13 @@
         <link rel="stylesheet" href="settings.css">
     </head>
     <body>
-        <div class='settings'>
+        <div class='lock'>
+            <p>Input Password:</p>
+            <input type="text" class='pass' id='code'>
+            <input type='button' id='lock' onclick='lock()' value='Lock'>
+            <p id='message'></p>
+        </div>
+        <div id='setDiv' class='settings'>
             <p id='speedP'>DVD Speed: 1</p>
             <input type='range' oninput="changeSpeed()" id='speed' min='1' max='100' value='1' class='slide'>
             <p id='sizeP'>DVD Size: 54px</p>

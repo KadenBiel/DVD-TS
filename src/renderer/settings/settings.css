@@ -7,12 +7,19 @@
 
 }
 
-
 * {
     background: #000000;
     color: #FFFFFF;
     font-family: 'dvd-plain';
     font-size: 18px;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.pass {
+    -webkit-text-security: circle;
 }
 
 .settings {

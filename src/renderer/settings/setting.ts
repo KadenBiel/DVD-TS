@@ -10,6 +10,13 @@ const color4 = document.getElementById('color4');
 const color5 = document.getElementById('color5');
 const color6 = document.getElementById('color6');
 const color7 = document.getElementById('color7');*/
+const lockBut = document.getElementById('lock');
+const setDiv = document.getElementById('setDiv');
+const usrIn = document.getElementById('code');
+const message = document.getElementById('message');
+
+let locked;
+let code;
 
 const { ipcRenderer } = require('electron');
 const version = document.getElementById('version');
@@ -25,8 +32,22 @@ ipcRenderer.on('send-settings', (event, settings) => {
     ipcRenderer.removeAllListeners('send-settings');
     dvdSize.value = settings.size;
     speed.value = settings.dvdSpeed;
+    locked = settings.lock;
     changeAll();
 });
+
+ipcRenderer.send('getLock');
+ipcRenderer.on('sendLock', (event, args) => {
+    if (args.locked) {
+        code = args.pin;
+        locked = args.locked;
+        setDiv.className = 'hide'
+        lockBut.value = 'Unlock'
+    } else {
+        locked = args.locked
+    }
+});
+
 
 function changeSpeed() {
     speedP.innerText = "DVD Speed: "+speed.value;
@@ -79,6 +100,9 @@ function changeAll() {
     changeColor5();
     changeColor6();
     changeColor7();*/
+    if (locked) {
+        lockBut.value = 'Unlock'
+    }
 }
 
 function restore() {
@@ -100,4 +124,30 @@ function save() {
         size: dvdSize.value,
         speed: speed.value,
     });
+}
+
+function lock() {
+    if (locked) {
+        var userIn = usrIn.value;
+        if (userIn == code) {
+            locked = !locked
+            ipcRenderer.send('Lock', {lock: locked, pin: code});
+            setDiv.className = 'settings'
+            lockBut.value = 'Lock'
+            usrIn.value = ''
+            message.innerText = ''
+        } else {
+            message.innerText = 'Incorrect passcode'
+            usrIn.value = ''
+        }
+    } else {
+        message.innerText = ''
+        var userIn = usrIn.value;
+        locked = !locked
+        code = userIn
+        lockBut.value = 'Unlock'
+        ipcRenderer.send('Lock', {lock: locked, pin: code});
+        setDiv.className = 'hide'
+        usrIn.value = ''
+    }
 }
