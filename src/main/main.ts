@@ -113,7 +113,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      devTools: true,
+      devTools: false,
     },
   });
   mainWindow.setThumbarButtons([])
@@ -122,9 +122,9 @@ function createWindow() {
     protocol: 'file:',
     slashes: true,
   }));
-  /*mainWindow.webContents.on('devtools-opened', () => {
+  mainWindow.webContents.on('devtools-opened', () => {
     mainWindow.webContents.closeDevTools();
-  });*/
+  });
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
@@ -155,9 +155,9 @@ function closeSettings() {
 app.on('ready', () => {
   createWindow();
   Menu.setApplicationMenu(mainMenu);
-  mainWindow.webContents.openDevTools({
+  /*mainWindow.webContents.openDevTools({
     mode: 'detach',
-  });
+  });*/
   autoUpdater.checkForUpdates();
 });
 
