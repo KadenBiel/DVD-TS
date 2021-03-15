@@ -67,7 +67,7 @@ const mainTemplate = [
       {
         label: 'Change log',
         click: function() {
-          shell.openExternal('https://github.com/KadenBiel/DVD-TS/CHANGELOG.md')
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS/blob/master/CHANGELOG.md')
         }
       }
     ]
@@ -113,7 +113,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      devTools: false,
+      devTools: true,
     },
   });
   mainWindow.setThumbarButtons([])
@@ -122,9 +122,9 @@ function createWindow() {
     protocol: 'file:',
     slashes: true,
   }));
-  mainWindow.webContents.on('devtools-opened', () => {
+  /*mainWindow.webContents.on('devtools-opened', () => {
     mainWindow.webContents.closeDevTools();
-  });
+  });*/
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
@@ -155,9 +155,9 @@ function closeSettings() {
 app.on('ready', () => {
   createWindow();
   Menu.setApplicationMenu(mainMenu);
-  /*mainWindow.webContents.openDevTools({
+  mainWindow.webContents.openDevTools({
     mode: 'detach',
-  });*/
+  });
   autoUpdater.checkForUpdates();
 });
 
@@ -223,3 +223,30 @@ ipcMain.on('save-settings', (event, settings) => {
   })
   closeSettings();
 });
+
+ipcMain.on('Lock', (event, args) => {
+  if (args.lock) {
+    store.set('pin', args.pin)
+    store.set('locked', 'true')
+  } else {
+    store.set('locked', 'false')
+  }
+})
+
+ipcMain.on('getLock', () => {
+  var pin = store.get('pin')
+  var locked = store.get('locked')
+  if (locked == 'true') {
+    locked = true
+  } else {
+    locked = false
+  }
+  mainWindow.webContents.send('sendLock', {
+    locked: locked,
+    pin: pin,
+  })
+})
+
+ipcMain.on('closeSettings', () => {
+  closeSettings()
+})
