@@ -26,22 +26,20 @@ ipcRenderer.on('send-settings', (event, settings) => {
     var h = settings.size;
     var w = Math.round(h/(2/3));
     var dS = settings.dvdSpeed;
-    startDvd(w,h,dS);
+    var colors = settings.colors
+    startDvd(w,h,dS,colors);
 });
 
-function startDvd(w,h,dS) {    
+function startDvd(w,h,dS,colors) {    
     let x = 0;
     let y = 0;
     var vx = 1;
     var vy = 1;
-    var colors = ['blue', 'green', 'yellow', 'orange', 'purple', 'red']
+    var r = 0;
+    var g = 255;
+    var b = 0;
     var img = document.getElementById('dvd');
-
-    ipcRenderer.on('resize', () => {
-        console.log('resize')
-        size = getDivSize();
-        
-    });
+    newColor();
 
     const canDiv = document.getElementById('cDiv');
     const ctx = document.getElementById("c").getContext("2d");
@@ -86,9 +84,21 @@ function startDvd(w,h,dS) {
         return items[items.length * Math.random() | 0];
     }
 
+    function HexToRGB(Hex)
+    {
+        var Long = parseInt(Hex.replace(/^#/, ""), 16);
+        return {
+            R: (Long >>> 16) & 0xff,
+            G: (Long >>> 8) & 0xff,
+            B: Long & 0xff
+        };
+    }
+
     function newColor() {
-        var nColor = rand(colors)
-        img.src = '../../assets/' + nColor + '.png'
+        var nColor = HexToRGB(rand(colors))
+        r = nColor.R
+        g = nColor.G
+        b = nColor.B
     };
 
     var W0 = W - w;
@@ -161,9 +171,25 @@ function startDvd(w,h,dS) {
         context.clearRect(0, 0, width, height);
         context.fillStyle = "#000000";
         context.fillRect(0, 0, width, height);
-        context.fillStyle = "#000000";
-        context.fillRect(x, y, w, h);
         context.drawImage(img, x, y, w, h);
+
+        var imgData = ctx.getImageData(x, y, w, h);
+
+        for (var i = 0; i < imgData.data.length; i += 4) {
+            if (imgData.data[i] == 255) {
+                imgData.data[i] = r;
+                imgData.data[i+1] = g;
+                imgData.data[i+2] = b;
+                imgData.data[i+3] = 255;
+            } else if (imgData.data[i] > 0) {
+                imgData.data[i] = 0;
+                imgData.data[i+1] = 0;
+                imgData.data[i+2] = 0;
+                imgData.data[i+3] = 255;
+            }
+        }
+
+        ctx.putImageData(imgData, x, y);
 
         // test whether we are in a corner
         if (x == 0 && y == 0) {

@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2021-03-15
+### Added
+- Ability to set custom colors (up to 8 colors for now)
+
 ## [1.2.1] - 2021-03-15
 ### Added
 - New settings lock ability
