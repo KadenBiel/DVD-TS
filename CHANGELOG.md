@@ -5,7 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.3.1] - 2021-03-15
+## [1.3.2] - 2021-03-26
+### Added
+- Unlimited colors
+
+## [1.3.1] - 2021-03-16
 ### Added
 - Ability to set custom colors (up to 8 colors for now)
 
