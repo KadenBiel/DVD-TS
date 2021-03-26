@@ -21,18 +21,25 @@ const schema = {
     type: 'array',
     items: {
       type: 'string',
-      minLength: 7,
-      maxLength: 7
+      minLength: 1
     }
   },
+  locked: {
+    type: 'boolean',
+    default: false
+  },
+  pin: {
+    type: 'string',
+    default: ''
+  }
 }
 
-const store = new Store({schema});
+const store = new Store({schema: schema});
 
 let mainWindow;
 let update = false;
 
-const mainTemplate = [
+const mainTemplate = [ // Menu template for main page
   {
     label: 'DVD Menu',
     submenu: [
@@ -97,7 +104,7 @@ const mainTemplate = [
   }
 ]
 
-const settingsTemplate = [
+const settingsTemplate = [ // Menu template for settings page
   {
     label: 'DVD Menu',
     submenu: [
@@ -124,13 +131,48 @@ const settingsTemplate = [
         role: 'togglefullscreen'
       }
     ]
+  },
+  {
+    label: 'Help',
+    submenu: [
+      {
+        label: 'Report a Bug',
+        click: function() {
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
+        }
+      },
+      {
+        label: 'Ask a Question',
+        click: function() {
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
+        }
+      },
+      {
+        label: 'Github',
+        click: function() {
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS')
+        }
+      },
+      {
+        label: 'Discord',
+        click: function() {
+          shell.openExternal('https://discord.gg/t76fzaYJcr')
+        }
+      },
+      {
+        label: 'Change log',
+        click: function() {
+          shell.openExternal('https://github.com/KadenBiel/DVD-TS/blob/master/CHANGELOG.md')
+        }
+      }
+    ]
   }
 ]
 
-const mainMenu = Menu.buildFromTemplate(mainTemplate);
-const settingsMenu = Menu.buildFromTemplate(settingsTemplate);
+const mainMenu = Menu.buildFromTemplate(mainTemplate); // Builds menu for main screen
+const settingsMenu = Menu.buildFromTemplate(settingsTemplate); // Build menu for settings screen
 
-function createWindow() {
+function createWindow() { // Function for creating the window
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -153,7 +195,7 @@ function createWindow() {
   });
 };
 
-function openSettings() {
+function openSettings() { // Function for opening the settings page
   console.log('open settings')
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, '../renderer/settings/settings.html'),
@@ -164,7 +206,7 @@ function openSettings() {
   Menu.setApplicationMenu(settingsMenu)
 }
 
-function closeSettings() {
+function closeSettings() { // Function for closing the settings page
   console.log ('close settings')
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, '../renderer/index.html'),
@@ -175,96 +217,73 @@ function closeSettings() {
   Menu.setApplicationMenu(mainMenu)
 }
 
-app.on('ready', () => {
+app.on('ready', () => { // Creates the mainWindow, sets the app menu and checks for updates when the app is ready
   createWindow();
   Menu.setApplicationMenu(mainMenu);
-  /*mainWindow.webContents.openDevTools({
+  /*mainWindow.webContents.openDevTools({ // Opens devTools in detached mode
     mode: 'detach',
   });*/
   autoUpdater.checkForUpdates();
 });
 
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', function () {
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
-
-autoUpdater.on('update-available', () => {
+autoUpdater.on('update-available', () => { // Tells the window and update is available
   mainWindow.webContents.send('update_available');
   update = true;
 });
 
-autoUpdater.on('update-downloaded', () => {
+autoUpdater.on('update-downloaded', () => { // Tells the window an update was downloaded
   mainWindow.webContents.send('update_downloaded');
 });
 
-ipcMain.on('app_version', (event) => {
-  event.sender.send('app_version', { version: app.getVersion(), url: autoUpdater.getFeedURL() });
+ipcMain.on('get_version', (event) => { // Returns app version when called
+  event.sender.send('return_version', { version: app.getVersion(), url: autoUpdater.getFeedURL() });
 });
 
-ipcMain.on('restart_app', () => {
-  app.relaunch();
+ipcMain.on('restart', () => { // Installs new update and restarts app
   autoUpdater.quitAndInstall();
 });
 
-ipcMain.on('get-settings', (event) => {
+ipcMain.on('get_settings', (event) => { // Returns settings when called
   var size = store.get('size');
   var dspeed = store.get('speed');
   var colors = store.get('colors');
-  event.sender.send('send-settings', {
+  event.sender.send('return_settings', {
     dvdSpeed: parseInt(dspeed),
     size: parseInt(size),
     colors: colors,
   })
 });
 
-ipcMain.on('save-settings', (event, settings) => {
+ipcMain.on('save_settings', (event, settings) => { // Saves the settings in storage
   let noError = true;
   store.set('size', settings.size);
   store.set('speed', settings.speed);
   store.set('colors', settings.colors)
-  event.sender.send('saved-settings', {
-    success: noError,
-  })
   closeSettings();
 });
 
-ipcMain.on('delete-settings', () => {
-  store.delete('size');
-  store.delete('speed');
-  store.delete('colors')
+ipcMain.on('reset_settings', () => { // For debugging, resets settings to defaults
+  store.clear()
 })
 
-ipcMain.on('Lock', (event, args) => {
+ipcMain.on('lock', (event, args) => { // Sets the lock bool and pin
   if (args.lock) {
     store.set('pin', args.pin)
-    store.set('locked', 'true')
+    store.set('locked', true)
   } else {
-    store.set('locked', 'false')
+    store.set('locked', false)
   }
 })
 
-ipcMain.on('getLock', () => {
+ipcMain.on('get_lock', () => { // Returns lock bool and pin when called
   var pin = store.get('pin')
   var locked = store.get('locked')
-  if (locked == 'true') {
-    locked = true
-  } else {
-    locked = false
-  }
-  mainWindow.webContents.send('sendLock', {
+  mainWindow.webContents.send('return_lock', {
     locked: locked,
     pin: pin,
   })
 })
 
-ipcMain.on('closeSettings', () => {
+ipcMain.on('closeSettings', () => { // Listener for debugging situations
   closeSettings()
 })

@@ -1,9 +1,9 @@
 const { ipcRenderer } = require('electron');
 const version = document.getElementById('version');
 
-ipcRenderer.send('app_version');
-ipcRenderer.on('app_version', (event, arg) => {
-    ipcRenderer.removeAllListeners('app_version');
+ipcRenderer.send('get_version');
+ipcRenderer.on('return_version', (event, arg) => {
+    ipcRenderer.removeAllListeners('return_version');
     version.innerText = 'DVD Screen v' + arg.version;
     console.log(arg.url);
 });
@@ -16,13 +16,13 @@ ipcRenderer.on('update_available', () => {
 ipcRenderer.on('update_downloaded', (info) => {
     ipcRenderer.removeAllListeners('update_downloaded');
     if(confirm("Update downloaded. Hit OK to restart and install the update.")) {
-        ipcRenderer.send('restart_app')
+        ipcRenderer.send('restart')
     }
 });
 
-ipcRenderer.send('get-settings')
-ipcRenderer.on('send-settings', (event, settings) => {
-    ipcRenderer.removeAllListeners('send-settings');
+ipcRenderer.send('get_settings')
+ipcRenderer.on('return_settings', (event, settings) => {
+    ipcRenderer.removeAllListeners('return_settings');
     var h = settings.size;
     var w = Math.round(h/(2/3));
     var dS = settings.dvdSpeed;

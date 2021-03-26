@@ -1,6 +1,6 @@
 {
   "name": "dvdjs",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Full-fledged dvd-screen saver",
   "main": "src/main/main.ts",
   "repository": {

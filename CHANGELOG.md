@@ -5,7 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.3.1] - 2021-03-15
+## [1.3.2] - 2021-03-26
+### Added
+- Unlimited colors
+
+## [1.3.1] - 2021-03-16
 ### Added
 - Ability to set custom colors (up to 8 colors for now)
 
@@ -93,6 +97,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - HTML canvas doesn't fill whole screen
 
 [UNRELEASED]: https://github.com/KadenBiel/DVD-TS/compare/v1.2.1...HEAD
+[1.3.2]: https://github.com/KadenBiel/DVD-TS/compare/v1.3.1...v1.3.2
+[1.3.1]: https://github.com/KadenBiel/DVD-TS/compare/v1.2.1...v1.3.1
 [1.2.1]: https://github.com/KadenBiel/DVD-TS/compare/v1.1.1...v1.2.1
 [1.1.1]: https://github.com/KadenBiel/DVD-TS/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/KadenBiel/DVD-TS/compare/v1.0.5...v1.1.0

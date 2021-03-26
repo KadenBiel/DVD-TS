@@ -2,50 +2,46 @@ const speed = document.getElementById('speed');
 const speedP = document.getElementById('speedP');
 const dvdSize = document.getElementById('size');
 const sizeP = document.getElementById('sizeP');
-const color0 = document.getElementById('color0');
-const color1 = document.getElementById('color1');
-const color2 = document.getElementById('color2');
-const color3 = document.getElementById('color3');
-const color4 = document.getElementById('color4');
-const color5 = document.getElementById('color5');
-const color6 = document.getElementById('color6');
-const color7 = document.getElementById('color7');
 const lockBut = document.getElementById('lock');
 const setDiv = document.getElementById('setDiv');
 const usrIn = document.getElementById('code');
 const message = document.getElementById('message');
+const colorDiv = document.getElementById('colorDiv');
 
 let locked;
 let code;
+let colors = [];
+let dColors = ['#0079fe','#0ed145','#ff7f27','#b83dba','#ec1c24','#fff200','#ff71ff','#ffffff'];
 
 const { ipcRenderer } = require('electron');
 const version = document.getElementById('version');
       
-ipcRenderer.send('app_version');
-ipcRenderer.on('app_version', (event, arg) => {
-    ipcRenderer.removeAllListeners('app_version');
+ipcRenderer.send('get_version');
+ipcRenderer.on('return_version', (event, arg) => {
+    ipcRenderer.removeAllListeners('return_version');
     version.innerText = 'DVD Screen v' + arg.version;
 });
 
-ipcRenderer.send('get-settings')
-ipcRenderer.on('send-settings', (event, settings) => {
-    ipcRenderer.removeAllListeners('send-settings');
+ipcRenderer.send('get_settings')
+ipcRenderer.on('return_settings', (event, settings) => {
+    ipcRenderer.removeAllListeners('return_settings');
     dvdSize.value = settings.size;
     speed.value = settings.dvdSpeed;
-    color0.value = settings.colors[0];
-    color1.value = settings.colors[1];
-    color2.value = settings.colors[2];
-    color3.value = settings.colors[3];
-    color4.value = settings.colors[4];
-    color5.value = settings.colors[5];
-    color6.value = settings.colors[6];
-    color7.value = settings.colors[7];
     locked = settings.lock;
+    for (var i=0; i<settings.colors.length; i++) {
+        var nColor = document.createElement('input');
+        nColor.className = 'color';
+        nColor.id = 'color'+i.toString;
+        nColor.type = 'color';
+        nColor.value = settings.colors[i];
+        colors[i] = nColor
+        colorDiv.appendChild(nColor)
+    }
     changeAll();
 });
 
-ipcRenderer.send('getLock');
-ipcRenderer.on('sendLock', (event, args) => {
+ipcRenderer.send('get_lock');
+ipcRenderer.on('return_lock', (event, args) => {
     if (args.locked) {
         code = args.pin;
         locked = args.locked;
@@ -73,25 +69,50 @@ function changeAll() {
     }
 }
 
+function newColor(val='#ffffff') {
+    var nColor = document.createElement('input');
+    nColor.className = 'color';
+    nColor.id = 'color'+colors.length.toString;
+    nColor.type = 'color';
+    nColor.value = val;
+    colors[colors.length] = nColor;
+    colorDiv.appendChild(nColor)
+}
+
+function remColor(oColor=null) {
+    if (oColor == null) {
+        if (colors.length != 1) {
+            var oColor = colors.pop()
+            oColor.remove()
+        }
+    } else {
+        oColor.remove()
+    }
+}
+
 function restore() {
     speed.value = "1";
     dvdSize.value = "54";
-    color0.value = "#0079fe";
-    color1.value = "#0ed145";
-    color2.value = "#ff7f27";
-    color3.value = "#b83dba";
-    color4.value = "#ec1c24";
-    color5.value = "#fff200";
-    color6.value = "#ff71ff";
-    color7.value = "#ffffff";
+    var len = colors.length
+    for (var i=0; i<len; i++) {
+        var oC = colors.pop()
+        remColor(oC)
+    }
+    for (var i=0; i<dColors.length; i++) {
+        newColor(dColors[i])
+    }
     changeAll();
 }
 
 function save() {
-    ipcRenderer.send('save-settings', {
+    var sColors = []
+    for (var i=0; i<colors.length; i++) {
+        sColors[i] = colors[i].value
+    }
+    ipcRenderer.send('save_settings', {
         size: parseInt(dvdSize.value),
         speed: parseInt(speed.value),
-        colors: [color0.value,color1.value,color2.value,color3.value,color4.value,color5.value,color6.value,color7.value,]
+        colors: sColors,
     });
 }
 
@@ -100,7 +121,7 @@ function lock() {
         var userIn = usrIn.value;
         if (userIn == code) {
             locked = !locked
-            ipcRenderer.send('Lock', {lock: locked, pin: code});
+            ipcRenderer.send('lock', {lock: locked, pin: code});
             setDiv.className = 'settings'
             lockBut.value = 'Lock'
             usrIn.value = ''
@@ -115,7 +136,7 @@ function lock() {
         locked = !locked
         code = userIn
         lockBut.value = 'Unlock'
-        ipcRenderer.send('Lock', {lock: locked, pin: code});
+        ipcRenderer.send('lock', {lock: locked, pin: code});
         setDiv.className = 'hide'
         usrIn.value = ''
     }
