@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Major user-interface overhaul
 
+### Added
+- Added hot keys to open settings or to exit/reload the app
+
 ### Fixed
 - Menu no longer appears while in fullscreen mode
 - Cut back on resource useage
