@@ -187,7 +187,7 @@ function createWindow() { // Function for creating the window
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      devTools: true,
+      devTools: false,
     },
   });
   mainWindow.setThumbarButtons([])
@@ -196,9 +196,9 @@ function createWindow() { // Function for creating the window
     protocol: 'file:',
     slashes: true,
   }));
-  /*mainWindow.webContents.on('devtools-opened', () => {
+  mainWindow.webContents.on('devtools-opened', () => {
     mainWindow.webContents.closeDevTools();
-  });*/
+  });
   mainWindow.on('enter-full-screen', () => {
     if (mainScrn) {
       mainWindow.setMenuBarVisibility(false);
@@ -239,9 +239,9 @@ function closeSettings() { // Function for closing the settings page
 app.on('ready', () => { // Creates the mainWindow, sets the app menu and checks for updates when the app is ready
   createWindow();
   Menu.setApplicationMenu(mainMenu);
-  mainWindow.webContents.openDevTools({ // Opens devTools in detached mode
+  /*mainWindow.webContents.openDevTools({ // Opens devTools in detached mode
     mode: 'detach',
-  })
+  })*/
   autoUpdater.checkForUpdates();
 });
 
