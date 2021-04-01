@@ -5,24 +5,32 @@
         <link rel="stylesheet" href="settings.css">
     </head>
     <body>
-        <div class='lock'>
-            <p>Input Password:</p>
+        <p class='sect'>Input Password:</p>
+        <div class='settings'>
             <input type="text" class='pass' id='code'>
-            <input type='button' id='lock' onclick='lock()' value='Lock'>
+            <input type='button' style:'padding:15px;' id='lock' onclick='lock()' value='Lock'>
             <p id='message'></p>
         </div>
-        <div id='setDiv' class='settings'>
-            <p id='speedP'>DVD Speed: 1</p>
-            <input type='range' oninput="changeSpeed()" id='speed' min='1' max='100' value='1' class='slide'>
-            <p id='sizeP'>DVD Size: 54px</p>
-            <input type='range' oninput="changeSize()" id='size' min='10' max='200' value='54' class='slide'>
-            <p>Colors:</p>
-            <div id='colorDiv'></div>
-            <input type='button' onclick='newColor()' value='Add Color'>
-            <input type='button' onclick='remColor()' value='Remove Color'>
-            <p>Save:</p>
-            <input type='button' onclick='restore()' value='Reset'>
-            <input type='button' onclick='save()' value='Save'>
+        <div id='setDiv' style='width: 100%;'>
+            <p id='speedP' class='sect'>DVD Speed: 1</p>
+            <div class='settings'>
+                <input type='range' oninput="changeSpeed()" id='speed' min='1' max='100' value='1' class='slide'>
+            </div>
+            <p id='sizeP' class='sect'>DVD Size: 54px</p>
+            <div class='settings'>
+                <input type='range' oninput="changeSize()" id='size' min='10' max='200' value='54' class='slide'>
+            </div>
+            <p class="sect">Colors:</p>
+            <div class='settings' id='colorDiv'></div>
+            <div class='settings'>
+                <input type='button' onclick='newColor()' value='Add Color'>
+                <input type='button' onclick='remColor()' value='Remove Color'>
+            </div>
+            <p class='sect'>Save:</p>
+            <div class='settings'>
+                <input type='button' onclick='restore()' value='Reset'>
+                <input type='button' onclick='save()' value='Save'>
+            </div>
         </div>
         <script src="setting.ts"></script>
     </body>
