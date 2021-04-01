@@ -39,7 +39,7 @@ function startDvd(w,h,dS,colors) {
     var g = 255;
     var b = 0;
     var img = document.getElementById('dvd');
-    newColor();
+    let imgData = null;
 
     const canDiv = document.getElementById('cDiv');
     const ctx = document.getElementById("c").getContext("2d");
@@ -94,11 +94,33 @@ function startDvd(w,h,dS,colors) {
         };
     }
 
-    function newColor() {
+    function newColor(width, height) {
         var nColor = HexToRGB(rand(colors))
         r = nColor.R
         g = nColor.G
         b = nColor.B
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, width, height) 
+
+        ctx.drawImage(img, x, y, w, h);
+
+        imgData = ctx.getImageData(x, y, w, h);
+
+        for (var i = 0; i < imgData.data.length; i += 4) {
+            if (imgData.data[i] == 255) {
+                imgData.data[i] = r;
+                imgData.data[i+1] = g;
+                imgData.data[i+2] = b;
+                imgData.data[i+3] = 255;
+            } else if (imgData.data[i] > 0) {
+                imgData.data[i] = 0;
+                imgData.data[i+1] = 0;
+                imgData.data[i+2] = 0;
+                imgData.data[i+3] = 255;
+            }
+        }
     };
 
     var W0 = W - w;
@@ -136,19 +158,19 @@ function startDvd(w,h,dS,colors) {
             y += vy;
             if(x+w==width) {
                 vx = -vx;
-                newColor();
+                newColor(width, height);
             };
             if(y+h==height) {
                 vy = -vy;
-                newColor();
+                newColor(width, height);
             };
             if(x==0) {
                 vx = -vx;
-                newColor();
+                newColor(width, height);
             };
             if(y==0) {
                 vy = -vy;
-                newColor();
+                newColor(width, height);
             };
             if (x+w > width) {
                 x = width-w-1
@@ -163,51 +185,33 @@ function startDvd(w,h,dS,colors) {
     
     
     function draw(width, height) {
-        var canvas  = document.getElementById("c");
-        var context = canvas.getContext("2d");
 
         setCanvasSize(width, height);
 
-        context.clearRect(0, 0, width, height);
-        context.fillStyle = "#000000";
-        context.fillRect(0, 0, width, height);
-        context.drawImage(img, x, y, w, h);
-
-        var imgData = ctx.getImageData(x, y, w, h);
-
-        for (var i = 0; i < imgData.data.length; i += 4) {
-            if (imgData.data[i] == 255) {
-                imgData.data[i] = r;
-                imgData.data[i+1] = g;
-                imgData.data[i+2] = b;
-                imgData.data[i+3] = 255;
-            } else if (imgData.data[i] > 0) {
-                imgData.data[i] = 0;
-                imgData.data[i+1] = 0;
-                imgData.data[i+2] = 0;
-                imgData.data[i+3] = 255;
-            }
-        }
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, width, height);
 
         ctx.putImageData(imgData, x, y);
 
         // test whether we are in a corner
         if (x == 0 && y == 0) {
-            context.clearRect(0, height, width, 200);
-            context.fillText("TOP LEFT", 10, height+100);
+            ctx.clearRect(0, height, width, 200);
+            ctx.fillText("TOP LEFT", 10, height+100);
         } else if (x == 0 && y + h == height) {
-            context.clearRect(0, height, width, 200);
-            context.fillText("BOTTOM LEFT", 10, height+100);
+            ctx.clearRect(0, height, width, 200);
+            ctx.fillText("BOTTOM LEFT", 10, height+100);
         } else if (x + w == width && y == 0) {
-            context.clearRect(0, height, width, 200);
-            context.fillText("TOP RIGHT", 10, H+100);
+            ctx.clearRect(0, height, width, 200);
+            ctx.fillText("TOP RIGHT", 10, H+100);
         } else if (x + w == width && y + h == height) {
-            context.clearRect(0, height, width, 200);
-            context.fillText("BOTTOM RIGHT", 10, H+100);
+            ctx.clearRect(0, height, width, 200);
+            ctx.fillText("BOTTOM RIGHT", 10, H+100);
         }
     };  
 
     setCanvasSize(W, H);
     ctx.font = 'italic 20pt Calibri';
+    newColor(W, H);
     animate();
 }

@@ -38,26 +38,30 @@ const store = new Store({schema: schema});
 
 let mainWindow;
 let update = false;
+let mainScrn = true;
 
 const mainTemplate = [ // Menu template for main page
   {
     label: 'DVD Menu',
     submenu: [
       {
-        role: 'quit'
+        label: 'Exit',
+        accelerator: 'Esc',
+        click: function() {
+          app.quit()
+        }
       },
       {
         label: 'Restart',
+        accelerator: 'Ctrl+R',
         click: function() {
           app.relaunch()
           app.quit()
         }
       },
       {
-        role: 'reload'
-      },
-      {
         label: 'Open Settings',
+        accelerator: 'Ctrl+S',
         click: function() {
           openSettings()
         }
@@ -69,6 +73,7 @@ const mainTemplate = [ // Menu template for main page
   },
   {
     label: 'Help',
+    accelerator: 'F1',
     submenu: [
       {
         label: 'Report a Bug',
@@ -109,20 +114,23 @@ const settingsTemplate = [ // Menu template for settings page
     label: 'DVD Menu',
     submenu: [
       {
-        role: 'quit'
+        label: 'Exit',
+        accelerator: 'Esc',
+        click: function() {
+          app.quit()
+        }
       },
       {
         label: 'Restart',
+        accelerator: 'Ctrl+R',
         click: function() {
           app.relaunch()
           app.quit()
         }
       },
       {
-        role: 'reload'
-      },
-      {
         label: 'Close Settings',
+        accelerator: 'Ctrl+S',
         click: function() {
           closeSettings()
         }
@@ -134,6 +142,7 @@ const settingsTemplate = [ // Menu template for settings page
   },
   {
     label: 'Help',
+    accelerator: 'F1',
     submenu: [
       {
         label: 'Report a Bug',
@@ -178,7 +187,7 @@ function createWindow() { // Function for creating the window
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      devTools: false,
+      devTools: true,
     },
   });
   mainWindow.setThumbarButtons([])
@@ -187,9 +196,19 @@ function createWindow() { // Function for creating the window
     protocol: 'file:',
     slashes: true,
   }));
-  mainWindow.webContents.on('devtools-opened', () => {
+  /*mainWindow.webContents.on('devtools-opened', () => {
     mainWindow.webContents.closeDevTools();
+  });*/
+  mainWindow.on('enter-full-screen', () => {
+    if (mainScrn) {
+      mainWindow.setMenuBarVisibility(false);
+    };
   });
+  mainWindow.on('leave-full-screen', () => {
+    if (mainScrn) {
+      mainWindow.setMenuBarVisibility(true);
+    }
+  })
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
@@ -202,7 +221,7 @@ function openSettings() { // Function for opening the settings page
     protocol: 'file:',
     slashes: true,
   }));
-
+  mainScrn = false;
   Menu.setApplicationMenu(settingsMenu)
 }
 
@@ -213,16 +232,16 @@ function closeSettings() { // Function for closing the settings page
     protocol: 'file:',
     slashes: true,
   }));
-
+  mainScrn = true;
   Menu.setApplicationMenu(mainMenu)
 }
 
 app.on('ready', () => { // Creates the mainWindow, sets the app menu and checks for updates when the app is ready
   createWindow();
   Menu.setApplicationMenu(mainMenu);
-  /*mainWindow.webContents.openDevTools({ // Opens devTools in detached mode
+  mainWindow.webContents.openDevTools({ // Opens devTools in detached mode
     mode: 'detach',
-  });*/
+  })
   autoUpdater.checkForUpdates();
 });
 
