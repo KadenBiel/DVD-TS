@@ -1,65 +1,26 @@
-import React, { ReactChild } from 'react';
-import ReactDOM from 'react-dom';
-import TextField from '@material-ui/core/TextField';
+import React from 'react';
+//import TextField from '@material-ui/core/TextField';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import withStyles from '@material-ui/core/styles/withStyles';
+//import withStyles from '@material-ui/core/styles/withStyles';
 import Box from '@material-ui/core/Box';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
-import Checkbox from '@material-ui/core/Checkbox';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import MuiDivider from '@material-ui/core/Divider';
+//import FormControlLabel from '@material-ui/core/FormControlLabel';
+//import Radio from '@material-ui/core/Radio';
+//import Checkbox from '@material-ui/core/Checkbox';
+//import RadioGroup from '@material-ui/core/RadioGroup';
+//import MuiDivider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+//import Grid from '@material-ui/core/Grid';
 import ChevronLeft from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
-import Alert from '@material-ui/lab/Alert';
-import Slider from '@material-ui/core/Slider';
-import Tooltip from '@material-ui/core/Tooltip';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import { ipcRenderer } from 'electron';
-import DialogContentText from '@material-ui/core/DialogContentText';
-
-let vs, dvdSize, speed, locked;
-let code;
-let colors = [];
-let dColors = ['#0079fe','#0ed145','#ff7f27','#b83dba','#ec1c24','#fff200','#ff71ff','#ffffff'];
-
-ipcRenderer.send('get_version');
-ipcRenderer.on('return_version', (event, arg) => {
-    ipcRenderer.removeAllListeners('return_version');
-    vs = arg.version
-});
-
-ipcRenderer.send('get_settings');
-ipcRenderer.on('return_settings', (event, settings) => {
-    ipcRenderer.removeAllListeners('return_settings');
-    dvdSize = settings.size;
-    speed = settings.dvdSpeed;
-    locked = settings.lock;
-    for (var i=0; i<settings.colors.length; i++) {
-        var nColor = document.createElement('input');
-        nColor.className = 'color';
-        nColor.id = 'color'+i.toString;
-        nColor.type = 'color';
-        nColor.value = settings.colors[i];
-        colors[i] = nColor;
-    };
-});
-
-ipcRenderer.send('get_lock');
-ipcRenderer.on('return_lock', (event, args) => {
-    if (args.locked) {
-        code = args.pin;
-        locked = args.locked;
-    } else {
-        locked = args.locked;
-    };
-});
+//import Alert from '@material-ui/lab/Alert';
+//import Slider from '@material-ui/core/Slider';
+//import Tooltip from '@material-ui/core/Tooltip';
+//import Dialog from '@material-ui/core/Dialog';
+//import DialogTitle from '@material-ui/core/DialogTitle';
+//import DialogContent from '@material-ui/core/DialogContent';
+//import DialogActions from '@material-ui/core/DialogActions';
+//import Button from '@material-ui/core/Button';
+//import DialogContentText from '@material-ui/core/DialogContentText';
 
 interface StyleInput {
 	open: boolean;
@@ -130,13 +91,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Divider = withStyles((theme) => ({
+/*const Divider = withStyles((theme) => ({
 	root: {
 		width: '100%',
 		marginTop: theme.spacing(2),
 		marginBottom: theme.spacing(2),
 	},
-}))(MuiDivider);
+}))(MuiDivider);*/
 
 export interface SettingsProps {
 	open: boolean;
@@ -152,8 +113,7 @@ const Settings: React.FC<SettingsProps> = function ({ open, onClose }: SettingsP
 					className={classes.back}
 					size="small"
 					onClick={() => {
-                        onClose();
-                        ipcRenderer.send('closeSettings')
+                        onClose()
 					}}
 				>
 					<ChevronLeft htmlColor="#777" />

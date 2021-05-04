@@ -16,34 +16,18 @@ import {
     LinearProgress
 } from "@material-ui/core";
 import prettyBytes from 'pretty-bytes';
-import { ISettings } from '../common/ISettings';
+//import { ISettings } from '../common/ISettings';
 import { 
-    IpcMessages,
+    //IpcMessages,
     IpcRendererMessages,
     AutoUpdaterState
 } from '../common/ipc-messages';
 import theme from './theme';
 import Settings from './Settings';
 
-let appVersion = '';
+let appVersion = '0.0.0';
 
-ipcRenderer.send(IpcRendererMessages.GET_VERSION);
-ipcRenderer.on(IpcRendererMessages.RETURN_VERSION, (event, arg) => {
-    ipcRenderer.removeAllListeners(IpcRendererMessages.RETURN_VERSION);
-    appVersion = arg.version
-});
-
-ipcRenderer.send('get_settings')
-ipcRenderer.on('return_settings', (event, settings) => {
-    ipcRenderer.removeAllListeners('return_settings');
-    var h = settings.size;
-    var w = Math.round(h/(2/3));
-    var dS = settings.dvdSpeed;
-    var colors = settings.colors
-    dvd(w,h,dS,colors)
-});
-
-function dvd(w,h,dS,colors){    
+/*function dvd(w,h,dS,colors){    
     let x = 0;
     let y = 0;
     var vx = 1;
@@ -227,7 +211,7 @@ function dvd(w,h,dS,colors){
     ctx.font = 'italic 20pt Calibri';
     newColor(W, H);
     animate();
-}
+}*/
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -337,7 +321,7 @@ const App: React.FC = () => {
                 </DialogContent>
                 {updaterState.state === 'error' && (
 					<DialogActions>
-						<Button href="https://github.com/OhMyGuus/CrewLink/releases/latest">Download Manually</Button>
+						<Button href="https://github.com/KadenBiel/DVD-TS/releases/latest">Download Manually</Button>
 					</DialogActions>
 				)}
 				{updaterState.state === 'downloaded' && (
