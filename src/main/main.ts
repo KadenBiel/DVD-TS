@@ -32,154 +32,14 @@ const schema = {
     type: 'string',
     default: ''
   }
-}
+};
 
 const store = new Store({schema: schema});
 
 let mainWindow;
 let update = false;
 let mainScrn = true;
-
-const mainTemplate = [ // Menu template for main page
-  {
-    label: 'DVD Menu',
-    submenu: [
-      {
-        label: 'Exit',
-        accelerator: 'Esc',
-        click: function() {
-          app.quit()
-        }
-      },
-      {
-        label: 'Restart',
-        accelerator: 'Ctrl+R',
-        click: function() {
-          app.relaunch()
-          app.quit()
-        }
-      },
-      {
-        label: 'Open Settings',
-        accelerator: 'Ctrl+S',
-        click: function() {
-          openSettings()
-        }
-      },
-      {
-        role: 'togglefullscreen'
-      }
-    ]
-  },
-  {
-    label: 'Help',
-    accelerator: 'F1',
-    submenu: [
-      {
-        label: 'Report a Bug',
-        click: function() {
-          shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
-        }
-      },
-      {
-        label: 'Ask a Question',
-        click: function() {
-          shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
-        }
-      },
-      {
-        label: 'Github',
-        click: function() {
-          shell.openExternal('https://github.com/KadenBiel/DVD-TS')
-        }
-      },
-      {
-        label: 'Discord',
-        click: function() {
-          shell.openExternal('https://discord.gg/t76fzaYJcr')
-        }
-      },
-      {
-        label: 'Change log',
-        click: function() {
-          shell.openExternal('https://github.com/KadenBiel/DVD-TS/blob/master/CHANGELOG.md')
-        }
-      }
-    ]
-  }
-]
-
-const settingsTemplate = [ // Menu template for settings page
-  {
-    label: 'DVD Menu',
-    submenu: [
-      {
-        label: 'Exit',
-        accelerator: 'Esc',
-        click: function() {
-          app.quit()
-        }
-      },
-      {
-        label: 'Restart',
-        accelerator: 'Ctrl+R',
-        click: function() {
-          app.relaunch()
-          app.quit()
-        }
-      },
-      {
-        label: 'Close Settings',
-        accelerator: 'Ctrl+S',
-        click: function() {
-          closeSettings()
-        }
-      },
-      {
-        role: 'togglefullscreen'
-      }
-    ]
-  },
-  {
-    label: 'Help',
-    accelerator: 'F1',
-    submenu: [
-      {
-        label: 'Report a Bug',
-        click: function() {
-          shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
-        }
-      },
-      {
-        label: 'Ask a Question',
-        click: function() {
-          shell.openExternal('https://github.com/KadenBiel/DVD-TS/issues')
-        }
-      },
-      {
-        label: 'Github',
-        click: function() {
-          shell.openExternal('https://github.com/KadenBiel/DVD-TS')
-        }
-      },
-      {
-        label: 'Discord',
-        click: function() {
-          shell.openExternal('https://discord.gg/t76fzaYJcr')
-        }
-      },
-      {
-        label: 'Change log',
-        click: function() {
-          shell.openExternal('https://github.com/KadenBiel/DVD-TS/blob/master/CHANGELOG.md')
-        }
-      }
-    ]
-  }
-]
-
-const mainMenu = Menu.buildFromTemplate(mainTemplate); // Builds menu for main screen
-const settingsMenu = Menu.buildFromTemplate(settingsTemplate); // Build menu for settings screen
+let menuHide = true;
 
 function createWindow() { // Function for creating the window
   mainWindow = new BrowserWindow({
@@ -187,61 +47,47 @@ function createWindow() { // Function for creating the window
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      devTools: false,
+      //devTools: false,
     },
   });
-  mainWindow.setThumbarButtons([])
+  mainWindow.setThumbarButtons([]);
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, '../renderer/index.html'),
     protocol: 'file:',
     slashes: true,
   }));
-  mainWindow.webContents.on('devtools-opened', () => {
+  /*mainWindow.webContents.on('devtools-opened', () => {
     mainWindow.webContents.closeDevTools();
-  });
+  });*/
   mainWindow.on('enter-full-screen', () => {
     if (mainScrn) {
-      mainWindow.setMenuBarVisibility(false);
+      if (mainWindow.menuBarVisible) {
+        mainWindow.setMenuBarVisibility(false);
+        menuHide = false;
+      } else {
+        menuHide = true;
+      };
     };
   });
   mainWindow.on('leave-full-screen', () => {
-    if (mainScrn) {
+    if (mainScrn && !menuHide) {
       mainWindow.setMenuBarVisibility(true);
-    }
-  })
+    };
+  });
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
 };
 
-function openSettings() { // Function for opening the settings page
-  console.log('open settings')
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, '../renderer/settings/settings.html'),
-    protocol: 'file:',
-    slashes: true,
-  }));
-  mainScrn = false;
-  Menu.setApplicationMenu(settingsMenu)
-}
-
-function closeSettings() { // Function for closing the settings page
-  console.log ('close settings')
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, '../renderer/index.html'),
-    protocol: 'file:',
-    slashes: true,
-  }));
-  mainScrn = true;
-  Menu.setApplicationMenu(mainMenu)
-}
+function toggleMenu() {
+  mainWindow.setMenuBarVisibility(!mainWindow.menuBarVisible);
+};
 
 app.on('ready', () => { // Creates the mainWindow, sets the app menu and checks for updates when the app is ready
   createWindow();
-  Menu.setApplicationMenu(mainMenu);
-  /*mainWindow.webContents.openDevTools({ // Opens devTools in detached mode
+  mainWindow.webContents.openDevTools({ // Opens devTools in detached mode
     mode: 'detach',
-  })*/
+  });
   autoUpdater.checkForUpdates();
 });
 
@@ -270,39 +116,38 @@ ipcMain.on('get_settings', (event) => { // Returns settings when called
     dvdSpeed: parseInt(dspeed),
     size: parseInt(size),
     colors: colors,
-  })
+  });
 });
 
 ipcMain.on('save_settings', (event, settings) => { // Saves the settings in storage
   let noError = true;
   store.set('size', settings.size);
   store.set('speed', settings.speed);
-  store.set('colors', settings.colors)
-  closeSettings();
+  store.set('colors', settings.colors);
 });
 
 ipcMain.on('reset_settings', () => { // For debugging, resets settings to defaults
-  store.clear()
-})
+  store.clear();
+});
 
 ipcMain.on('lock', (event, args) => { // Sets the lock bool and pin
   if (args.lock) {
-    store.set('pin', args.pin)
-    store.set('locked', true)
+    store.set('pin', args.pin);
+    store.set('locked', true);
   } else {
-    store.set('locked', false)
-  }
+    store.set('locked', false);
+  };
+});
+
+ipcMain.on('quit_app', () => {
+  app.quit()
 })
 
 ipcMain.on('get_lock', () => { // Returns lock bool and pin when called
-  var pin = store.get('pin')
-  var locked = store.get('locked')
+  var pin = store.get('pin');
+  var locked = store.get('locked');
   mainWindow.webContents.send('return_lock', {
     locked: locked,
     pin: pin,
-  })
-})
-
-ipcMain.on('closeSettings', () => { // Listener for debugging situations
-  closeSettings()
-})
+  });
+});
