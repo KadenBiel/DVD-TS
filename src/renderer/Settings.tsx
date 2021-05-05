@@ -113,7 +113,7 @@ const Settings: React.FC<SettingsProps> = function ({ open, onClose }: SettingsP
 					className={classes.back}
 					size="small"
 					onClick={() => {
-                        onClose()
+						onClose();
 					}}
 				>
 					<ChevronLeft htmlColor="#777" />
@@ -124,4 +124,4 @@ const Settings: React.FC<SettingsProps> = function ({ open, onClose }: SettingsP
 	);
 };
 
-export default Settings
+export default Settings;

@@ -1,31 +1,30 @@
-import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
+import React, { Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { ipcRenderer } from 'electron';
 import ReactDOM from 'react-dom';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import SettingsIcon from '@material-ui/icons/Settings';
 import CloseIcon from '@material-ui/icons/Close';
-import { ThemeProvider } from '@material-ui/core/styles';
 import {
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    DialogContentText,
-    DialogActions,
-    Button,
-    IconButton,
-    LinearProgress
-} from "@material-ui/core";
+	Dialog,
+	DialogContent,
+	DialogTitle,
+	DialogContentText,
+	DialogActions,
+	Button,
+	IconButton,
+	LinearProgress
+} from '@material-ui/core';
 import prettyBytes from 'pretty-bytes';
 //import { ISettings } from '../common/ISettings';
 import { 
-    //IpcMessages,
-    IpcRendererMessages,
-    AutoUpdaterState
+	//IpcMessages,
+	IpcRendererMessages,
+	AutoUpdaterState
 } from '../common/ipc-messages';
 import theme from './theme';
 import Settings from './Settings';
 
-let appVersion = '0.0.0';
+const appVersion = '0.0.0';
 
 /*function dvd(w,h,dS,colors){    
     let x = 0;
@@ -237,10 +236,10 @@ const useStyles = makeStyles(() => ({
 		position: 'absolute',
 		top: 0,
 	},
-    canvas: {
-        width:'100%',
-        height: '100vh'
-    }
+	canvas: {
+		width:'100%',
+		height: '100vh'
+	}
 }));
 
 interface TitleBarProps {
@@ -254,59 +253,58 @@ const TitleBar: React.FC<TitleBarProps> = function ({ settingsOpen, setSettingsO
 		<div className={classes.root}>
 			<span className={classes.title}>
                 DVD Screen v{appVersion}
-            </span>
-            <IconButton
-                className={classes.button}
-                size='small'
-                style={{ left: 0 }}
-                onClick={() => {setSettingsOpen(!settingsOpen)}}
-            >
-                <SettingsIcon htmlColor='#777' />
-            </IconButton>
-            <IconButton
-                className={classes.button}
-                size='small'
-                style={{ right: 0 }}
-                onClick={() => {ipcRenderer.send('quit_app')}}
-            >
-                <CloseIcon htmlColor='#777' />
-            </IconButton>
+			</span>
+			<IconButton
+				className={classes.button}
+				size='small'
+				style={{ left: 0 }}
+				onClick={() => {setSettingsOpen(!settingsOpen);}}
+			>
+				<SettingsIcon htmlColor='#777' />
+			</IconButton>
+			<IconButton
+				className={classes.button}
+				size='small'
+				style={{ right: 0 }}
+				onClick={() => {ipcRenderer.send('quit_app');}}
+			>
+				<CloseIcon htmlColor='#777' />
+			</IconButton>
 		</div>
 	);
 };
 
-const App: React.FC = () => {
-    const classes = useStyles();
-    const [settingsOpen, setSettingsOpen] = useState(false)
-    const [updaterState, setUpdaterState] = useState<AutoUpdaterState>({
+export default function App(): JSX.Element  {
+	const [settingsOpen, setSettingsOpen] = useState(false);
+	const [updaterState, setUpdaterState] = useState<AutoUpdaterState>({
 		state: 'unavailable',
 	});
-    const [diaOpen, setDiaOpen] = useState(true);
-    useEffect(() => {
-        const onAutoUpdaterStateChange = (_: Electron.IpcRendererEvent, state: AutoUpdaterState) => {
+	const [diaOpen, setDiaOpen] = useState(true);
+	useEffect(() => {
+		const onAutoUpdaterStateChange = (_: Electron.IpcRendererEvent, state: AutoUpdaterState) => {
 			setUpdaterState((old) => ({ ...old, ...state }));
 		};
 		ipcRenderer.on(IpcRendererMessages.AUTO_UPDATER_STATE, onAutoUpdaterStateChange);
-        return () => {
-            ipcRenderer.off(IpcRendererMessages.AUTO_UPDATER_STATE, onAutoUpdaterStateChange);
-        }
-    })
-    return(
-        <ThemeProvider theme={theme}>
-            <TitleBar settingsOpen={settingsOpen} setSettingsOpen={setSettingsOpen} />
-            <Settings open={settingsOpen} onClose={() => {setSettingsOpen(false)}} />
-            <Dialog fullWidth open={(updaterState.state !== 'unavailable' && diaOpen)}>
-                {updaterState.state === 'downloaded' && updaterState.info && (
+		return () => {
+			ipcRenderer.off(IpcRendererMessages.AUTO_UPDATER_STATE, onAutoUpdaterStateChange);
+		};
+	});
+	return(
+		<div>
+			<TitleBar settingsOpen={settingsOpen} setSettingsOpen={setSettingsOpen} />
+			<Settings open={settingsOpen} onClose={() => {setSettingsOpen(false);}} />
+			<Dialog fullWidth open={(updaterState.state !== 'unavailable' && diaOpen)}>
+				{updaterState.state === 'downloaded' && updaterState.info && (
 				    <DialogTitle>Update v{updaterState.info.version}</DialogTitle>
 				)}
-                {updaterState.state === 'downloading' && <DialogTitle>Updating...</DialogTitle>}
-                <DialogContent>
-                    {updaterState.state === 'downloading' && updaterState.progress && (
+				{updaterState.state === 'downloading' && <DialogTitle>Updating...</DialogTitle>}
+				<DialogContent>
+					{updaterState.state === 'downloading' && updaterState.progress && (
 						<>
 							<LinearProgress variant={'determinate'} value={updaterState.progress.percent} />
-								<DialogContentText>
-								    {prettyBytes(updaterState.progress.transferred)} / {prettyBytes(updaterState.progress.total)}
-								</DialogContentText>
+							<DialogContentText>
+								{prettyBytes(updaterState.progress.transferred)} / {prettyBytes(updaterState.progress.total)}
+							</DialogContentText>
 						</>
 					)}
 					{updaterState.state === 'downloaded' && (
@@ -318,8 +316,8 @@ const App: React.FC = () => {
 					{updaterState.state === 'error' && (
 						<DialogContentText color="error">{updaterState.error}</DialogContentText>
 					)}
-                </DialogContent>
-                {updaterState.state === 'error' && (
+				</DialogContent>
+				{updaterState.state === 'error' && (
 					<DialogActions>
 						<Button href="https://github.com/KadenBiel/DVD-TS/releases/latest">Download Manually</Button>
 					</DialogActions>
@@ -338,16 +336,9 @@ const App: React.FC = () => {
 					    > Later </Button>
 					</DialogActions>
 				)}
-            </Dialog>
-            <div id='cDiv' className={classes.canvas}>
-                <canvas id='c'>
-                    <img src='../../assets/dvd.png' />
-                </canvas>
-            </div>
-        </ThemeProvider>
-    )
+			</Dialog>
+		</div>
+	);
 }
 
-export default App
-
-ReactDOM.render(<App/>, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));

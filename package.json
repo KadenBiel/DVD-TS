@@ -1,6 +1,6 @@
 {
   "name": "dvdjs",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "Full-fledged dvd-screen saver",
   "main": "src/main/main.ts",
   "repository": {
@@ -13,6 +13,7 @@
     "postinstall": "electron-builder install-app-deps",
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
+    "lint": "eslint src",
     "dist": "yarn compile && electron-builder --win --x64 --ia32",
     "dist:32": "yarn compile && electron-builder --win --ia32",
     "dist:64": "yarn compile && electron-builder --win --x64",
@@ -21,12 +22,22 @@
     "publish:linux": "yarn compile && electron-builder --x64 --linux --publish always"
   },
   "devDependencies": {
+    "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "@types/webpack-env": "^1.15.3",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
     "electron": "9.4.4",
     "electron-builder": "^22.9.1",
     "electron-webpack": "^2.8.2",
     "electron-webpack-ts": "^4.0.1",
+    "eslint": "^7.15.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "^2.2.1",
+    "prettier-eslint": "^12.0.0",
     "typescript": "^4.2.3",
     "webpack": "~4.42.1"
   },
@@ -39,9 +50,10 @@
     "builder-util-runtime": "^8.7.4",
     "electron-store": "^7.0.2",
     "electron-updater": "^4.3.8",
+    "minimist": "^1.2.5",
     "pretty-bytes": "^5.6.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "bugs": {
     "url": "https://github.com/KadenBiel/DVD-TS/issues"
