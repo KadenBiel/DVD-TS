@@ -98,10 +98,28 @@ ipcMain.on(IpcMessages.RESTART_AND_UPDATE, () => { // Installs new update and re
 	autoUpdater.quitAndInstall();
 });
 
+ipcMain.on(IpcRendererMessages.GET_SETTINGS, (event) => {
+	var size = store.get('size');
+  	var dspeed = store.get('speed');
+  	var colors = store.get('colors');
+	var askUpdate = store.get('askUpdate');
+	event.sender.send(IpcRendererMessages.RETURN_SETTINGS, {
+		dvdSpeed: dspeed,
+    	size: size,
+    	colors: colors,
+		askUpdate: askUpdate
+	})
+})
+
 ipcMain.on(IpcRendererMessages.SAVE_SETTINGS, (event, settings) => { // Saves the settings in storage
+	store.delete('size');
+	store.delete('speed');
+	store.delete('colors');
+	store.delete('askUpdate');
 	store.set('size', settings.size);
 	store.set('speed', settings.speed);
 	store.set('colors', settings.colors);
+	store.set('askUpdate', settings.askUpdate)
 });
 
 ipcMain.on(IpcRendererMessages.CLEAR_SETTINGS, () => { // For debugging, resets settings to defaults
