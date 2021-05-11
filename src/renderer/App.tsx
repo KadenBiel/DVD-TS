@@ -26,7 +26,7 @@ import {
 import theme from './theme';
 import Settings from './Settings';
 
-let askUpdate: boolean;
+let askUpdate = true;
 
 let appVersion = 'DEV';
 if (typeof window !== 'undefined' && window.location) {

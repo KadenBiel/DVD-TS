@@ -3,7 +3,7 @@ import { autoUpdater } from 'electron-updater';
 import Store from 'electron-store';
 import { format as formatUrl } from 'url';
 import { join as joinPath } from 'path';
-import { IpcMessages, IpcRendererMessages } from '../common/ipc-messages';
+import { AutoUpdaterState, IpcMessages, IpcRendererMessages } from '../common/ipc-messages';
 import { ProgressInfo, UpdateInfo } from 'builder-util-runtime';
 import { ISettings } from '../common/ISettings';
 
@@ -94,6 +94,33 @@ autoUpdater.on('update-downloaded', (info: UpdateInfo) => { // Tells the window 
 	});
 });
 
+/*setTimeout(() => {
+ 	mainWindow?.webContents.send(IpcRendererMessages.AUTO_UPDATER_STATE, {
+ 		state: 'available'
+ 	});
+ 	let total = 1000*1000;
+ 	let i = 0;
+ 	let interval = setInterval(() => {
+ 		mainWindow?.webContents.send(IpcRendererMessages.AUTO_UPDATER_STATE, {
+ 			state: 'downloading',
+ 			progress: {
+ 				total,
+ 				delta: total * 0.01,
+ 				transferred: i * total / 100,
+ 				percent: i,
+ 				bytesPerSecond: 1000
+ 			}
+ 		} as AutoUpdaterState);
+ 		i++;
+ 		if (i === 100) {
+ 			clearInterval(interval);
+			mainWindow?.webContents.send(IpcRendererMessages.AUTO_UPDATER_STATE, {
+				state: 'downloaded',
+			});
+		}
+	}, 100);
+}, 10000);*/
+
 ipcMain.on(IpcMessages.RESTART_AND_UPDATE, () => { // Installs new update and restarts app
 	autoUpdater.quitAndInstall();
 });
@@ -112,10 +139,6 @@ ipcMain.on(IpcRendererMessages.GET_SETTINGS, (event) => {
 })
 
 ipcMain.on(IpcRendererMessages.SAVE_SETTINGS, (event, settings) => { // Saves the settings in storage
-	store.delete('size');
-	store.delete('speed');
-	store.delete('colors');
-	store.delete('askUpdate');
 	store.set('size', settings.size);
 	store.set('speed', settings.speed);
 	store.set('colors', settings.colors);
