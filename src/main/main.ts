@@ -3,7 +3,7 @@ import { autoUpdater } from 'electron-updater';
 import Store from 'electron-store';
 import { format as formatUrl } from 'url';
 import { join as joinPath } from 'path';
-import { AutoUpdaterState, IpcMessages, IpcRendererMessages } from '../common/ipc-messages';
+import { IpcMessages, IpcRendererMessages } from '../common/ipc-messages';
 import { ProgressInfo, UpdateInfo } from 'builder-util-runtime';
 import { ISettings } from '../common/ISettings';
 
