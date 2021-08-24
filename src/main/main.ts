@@ -65,8 +65,17 @@ function createWindow() { // Function for creating the window
 	});
 }
 
+function setDefaultSettings() {
+	var defColors = ['#0079fe','#0ed145','#ff7f27','#b83dba','#ec1c24','#fff200','#ff71ff','#ffffff'];
+	store.set('size', 54);
+	store.set('speed', 1);
+	store.set('colors', defColors);
+	store.set('askUpdate', true)
+}
+
 app.on('ready', () => { // Creates the mainWindow, sets the app menu and checks for updates when the app is ready
 	createWindow();
+	setDefaultSettings();
 	autoUpdater.checkForUpdates();
 });
 
@@ -147,9 +156,16 @@ ipcMain.on(IpcRendererMessages.SAVE_SETTINGS, (event, settings) => { // Saves th
 
 ipcMain.on(IpcRendererMessages.CLEAR_SETTINGS, () => { // For debugging, resets settings to defaults
 	store.clear();
+	setDefaultSettings()
 });
 
-ipcMain.on(IpcMessages.QUIT_DVD, () => { // Closes the app
+ipcMain.on(IpcMessages.QUIT_DVD, () => {
+	try {
+		mainWindow?.close();
+		mainWindow?.destroy();
+	} catch {
+		/* empty */
+	}
 	app.quit();
 });
 

@@ -1,7 +1,4 @@
-import{ IpcRendererMessages } from '../common/ipc-messages';
-import { ipcRenderer } from "electron";
-
-function dvd(w,h,dS,colors){    
+export default function dvd(w,h,dS,colors){    
     let x = 0;
     let y = 0;
     var vx = 1;
@@ -9,12 +6,16 @@ function dvd(w,h,dS,colors){
     var r = 0;
     var g = 255;
     var b = 0;
-    var img = <HTMLImageElement> document.getElementById('dvd');
+    var img = <HTMLImageElement> document.createElement('img');
     let imgData = null;
 
+    img.src = './img/dvd.png';
+
     const canDiv = document.getElementById('cDiv');
-    const c = <HTMLCanvasElement> document.getElementById("c");
-    const ctx = c.getContext("2d");
+    const can = <HTMLCanvasElement> document.createElement('canvas');
+    const ctx = can.getContext("2d");
+
+    canDiv.appendChild(can)
 
     //get sive of the div containing the canvas
     function getDivSize() {
@@ -30,7 +31,7 @@ function dvd(w,h,dS,colors){
     //function to set the canvas size while running
     function setCanvasSize(w,h) {
         ctx.canvas.width = w;
-        ctx.canvas.height = h;
+        ctx.canvas.height = h-20;
     };
 
     function gcd(a,b) {
@@ -187,13 +188,3 @@ function dvd(w,h,dS,colors){
     newColor(W, H);
     animate();
 }
-
-ipcRenderer.send(IpcRendererMessages.GET_SETTINGS)
-ipcRenderer.on(IpcRendererMessages.RETURN_SETTINGS, (event, settings) => {
-    ipcRenderer.removeAllListeners(IpcRendererMessages.RETURN_SETTINGS);
-    var h = settings.size;
-    var w = Math.round(h/(2/3));
-    var dS = settings.dvdSpeed;
-    var colors = settings.colors
-    dvd(w,h,dS,colors);
-});
