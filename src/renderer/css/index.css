@@ -1,0 +1,44 @@
+@font-face {
+    font-family: 'dvd-plain';
+    src: url('dvdfont-webfont.woff2') format('woff2'),
+         url('dvdfont-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'dvd-plain';
+}
+
+body {
+    background-color: black;
+    color: whitesmoke;
+    margin: 0;
+    font-size: 18pt;
+    overflow: hidden
+}
+
+#app {
+    width: '100vw';
+    height: '100vh';
+}
+
+.color{
+    -webkit-appearance: none;
+    background-color: black;
+    border: none;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    padding: 25px;
+}
+
+.color::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color::-webkit-color-swatch {
+    width: 25px;
+    height: 25px;
+    border-radius: 25px;
+}

@@ -16,9 +16,9 @@ import {
 	ThemeProvider
 } from '@material-ui/core';
 import prettyBytes from 'pretty-bytes';
-//import { ISettings } from '../common/ISettings';
+import './css/index.css';
+import dvd from './dvd';
 import { 
-	//IpcMessages,
 	IpcRendererMessages,
 	AutoUpdaterState,
 	IpcMessages
@@ -38,16 +38,23 @@ ipcRenderer.send(IpcRendererMessages.GET_SETTINGS)
 ipcRenderer.on(IpcRendererMessages.RETURN_SETTINGS, (event, settings) => {
     ipcRenderer.removeAllListeners(IpcRendererMessages.RETURN_SETTINGS);
     askUpdate = settings.askUpdate
+	var h = 54;
+    var w = Math.round(h/(2/3));
+    var dS = 2;
+    var colors = ['#0079fe','#0ed145','#ff7f27','#b83dba','#ec1c24','#fff200','#ff71ff','#ffffff'];
+    dvd(w,h,dS,colors);
 });
 
 const useStyles = makeStyles(() => ({
 	root: {
 		position: 'absolute',
-		width: '100vw',
+		width: '100%',
 		height: theme.spacing(3),
 		backgroundColor: '#1d1a23',
 		top: 0,
 		WebkitAppRegion: 'drag',
+		padding: '0px',
+		margin: '0px'
 	},
 	title: {
 		width: '100%',
@@ -65,7 +72,7 @@ const useStyles = makeStyles(() => ({
 		top: 0,
 	},
 	canvas: {
-		width:'100%',
+		width:'100vw',
 		height: '100vh'
 	}
 }));
@@ -96,7 +103,6 @@ const TitleBar: React.FC<TitleBarProps> = function ({ settingsOpen, setSettingsO
 				style={{ right: 0 }}
 				onClick={() => {
 					ipcRenderer.send(IpcMessages.QUIT_DVD);
-					console.log('close app')
 				}}
 			>
 				<CloseIcon htmlColor='#777' />
@@ -180,10 +186,7 @@ export default function App(): JSX.Element  {
 				)}
 			</Dialog>
             <div id='cDiv' className={classes.canvas}>
-                <canvas id='c'>
-                    <img src='../../assets/dvd.png' id='dvd' />
-                    <script src='./dvd.ts'></script>
-                </canvas>
+				{/* container for DVD canvas */}
             </div>
 		</ThemeProvider>
 	);

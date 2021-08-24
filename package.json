@@ -18,7 +18,7 @@
     "dist:32": "yarn compile && electron-builder --win --ia32",
     "dist:64": "yarn compile && electron-builder --win --x64",
     "dist:linux": "yarn compile && electron-builder --linux --x64",
-    "publish": "yarn compile && electron-builder --win --x64 --ia32 --publish always ",
+    "deploy": "yarn compile && electron-builder build --win --x64 --ia32 --publish always",
     "publish:linux": "yarn compile && electron-builder --x64 --linux --publish always"
   },
   "devDependencies": {
@@ -54,6 +54,7 @@
     "minimist": "^1.2.5",
     "pretty-bytes": "^5.6.0",
     "react": "^17.0.2",
+    "react-color": "^2.19.3",
     "react-dom": "^17.0.1"
   },
   "bugs": {
@@ -61,9 +62,9 @@
   },
   "homepage": "https://github.com/KadenBiel/DVD-TS#readme",
   "electronWebpack": {
-		"renderer": {
-			"webpackConfig": "webpack.renderer.config.js",
-			"webpackDllConfig": "webpack.renderer.config.js"
-		}
-	}
+    "renderer": {
+      "webpackConfig": "webpack.renderer.config.js",
+      "webpackDllConfig": "webpack.renderer.config.js"
+    }
+  }
 }
