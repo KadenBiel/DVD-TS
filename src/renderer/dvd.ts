@@ -1,6 +1,6 @@
 export default function dvd(w,h,dS,colors){    
     let x = 0;
-    let y = 0;
+    let y = 20;
     var vx = 1;
     var vy = 1;
     var r = 0;
@@ -31,7 +31,7 @@ export default function dvd(w,h,dS,colors){
     //function to set the canvas size while running
     function setCanvasSize(w,h) {
         ctx.canvas.width = w;
-        ctx.canvas.height = h-20;
+        ctx.canvas.height = h;
     };
 
     function gcd(a,b) {
@@ -141,7 +141,7 @@ export default function dvd(w,h,dS,colors){
                 vx = -vx;
                 newColor(width, height);
             };
-            if(y==0) {
+            if(y==20) {
                 vy = -vy;
                 newColor(width, height);
             };
@@ -168,13 +168,13 @@ export default function dvd(w,h,dS,colors){
         ctx.putImageData(imgData, x, y);
 
         // test whether we are in a corner
-        if (x == 0 && y == 0) {
+        if (x == 0 && y == 20) {
             ctx.clearRect(0, height, width, 200);
             ctx.fillText("TOP LEFT", 10, height+100);
         } else if (x == 0 && y + h == height) {
             ctx.clearRect(0, height, width, 200);
             ctx.fillText("BOTTOM LEFT", 10, height+100);
-        } else if (x + w == width && y == 0) {
+        } else if (x + w == width && y == 20) {
             ctx.clearRect(0, height, width, 200);
             ctx.fillText("TOP RIGHT", 10, H+100);
         } else if (x + w == width && y + h == height) {
