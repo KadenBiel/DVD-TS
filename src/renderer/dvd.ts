@@ -1,36 +1,7 @@
-const { ipcRenderer } = require('electron');
-const version = document.getElementById('version');
+import{ IpcRendererMessages } from '../common/ipc-messages';
+import { ipcRenderer } from "electron";
 
-ipcRenderer.send('get_version');
-ipcRenderer.on('return_version', (event, arg) => {
-    ipcRenderer.removeAllListeners('return_version');
-    version.innerText = 'DVD Screen v' + arg.version;
-    console.log(arg.url);
-});
-  
-ipcRenderer.on('update_available', () => {
-    ipcRenderer.removeAllListeners('update_available');
-    alert('New update available! downloading now!')
-});
-      
-ipcRenderer.on('update_downloaded', (info) => {
-    ipcRenderer.removeAllListeners('update_downloaded');
-    if(confirm("Update downloaded. Hit OK to restart and install the update.")) {
-        ipcRenderer.send('restart')
-    }
-});
-
-ipcRenderer.send('get_settings')
-ipcRenderer.on('return_settings', (event, settings) => {
-    ipcRenderer.removeAllListeners('return_settings');
-    var h = settings.size;
-    var w = Math.round(h/(2/3));
-    var dS = settings.dvdSpeed;
-    var colors = settings.colors
-    startDvd(w,h,dS,colors);
-});
-
-function startDvd(w,h,dS,colors) {    
+function dvd(w,h,dS,colors){    
     let x = 0;
     let y = 0;
     var vx = 1;
@@ -38,11 +9,12 @@ function startDvd(w,h,dS,colors) {
     var r = 0;
     var g = 255;
     var b = 0;
-    var img = document.getElementById('dvd');
+    var img = <HTMLImageElement> document.getElementById('dvd');
     let imgData = null;
 
     const canDiv = document.getElementById('cDiv');
-    const ctx = document.getElementById("c").getContext("2d");
+    const c = <HTMLCanvasElement> document.getElementById("c");
+    const ctx = c.getContext("2d");
 
     //get sive of the div containing the canvas
     function getDivSize() {
@@ -215,3 +187,13 @@ function startDvd(w,h,dS,colors) {
     newColor(W, H);
     animate();
 }
+
+ipcRenderer.send(IpcRendererMessages.GET_SETTINGS)
+ipcRenderer.on(IpcRendererMessages.RETURN_SETTINGS, (event, settings) => {
+    ipcRenderer.removeAllListeners(IpcRendererMessages.RETURN_SETTINGS);
+    var h = settings.size;
+    var w = Math.round(h/(2/3));
+    var dS = settings.dvdSpeed;
+    var colors = settings.colors
+    dvd(w,h,dS,colors);
+});
