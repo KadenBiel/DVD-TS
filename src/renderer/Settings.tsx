@@ -7,10 +7,8 @@ import ChevronLeft from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
 import MuiDivider from '@material-ui/core/Divider';
 //import { SliderPicker } from 'react-color';
-import { ipcRenderer } from 'electron';
-import { IpcRendererMessages } from '../common/ipc-messages';
 import { Checkbox, FormControlLabel, Slider, Button} from '@material-ui/core';
-import { store, setDefaultSettings, newColor, remColor, colorChange } from './settingHelper';
+import { setDefaultSettings, newColor, remColor, colorChange, saveSettings, get, set } from './settingHelper';
 
 interface StyleInput {
 	open: boolean;
@@ -78,14 +76,6 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'center',
 		fontSize: '16pt'
 	},
-	controlLabel: {
-		width: '100%',
-		marginRight: '0px',
-		fontSize: '14pt'
-	},
-	slider: {
-		width: '75vw'
-	},
 	formContainer: {
 		width: 'auto',
 		height: 'auto',
@@ -100,6 +90,22 @@ const useStyles = makeStyles((theme) => ({
 	buttonContainer: {
 		width: '100vw',
 		float: 'none'
+	}
+}));
+
+const sliderStyles = makeStyles(() => ({
+	slider: {
+		width: '75vw'
+	},
+	formLabel: {
+		width: '100%',
+		textAlign: 'center',
+		fontSize: '16pt'
+	},
+	controlLabel: {
+		width: '100%',
+		marginRight: '0px',
+		fontSize: '14pt'
 	}
 }));
 
@@ -120,6 +126,86 @@ function valueText(value: number) {
 	return `${value}°C`;
 }
 
+function SpeedSlider(): JSX.Element {
+	const [value, setValue] = React.useState(get('speed'))
+	const handleChange = (event: any, newValue) => {
+		setValue(newValue)
+		set('speed', value);
+	};
+	const classes = sliderStyles();
+	return (
+		<div>
+			<Typography className={classes.formLabel} id="discrete-slider1" gutterBottom>
+				Speed
+			</Typography>
+			<Slider
+				className={classes.slider}
+				defaultValue={1}
+				value={value}
+				onChange={handleChange}
+				getAriaValueText={valueText}
+				aria-labelledby="discrete-slider1"
+				valueLabelDisplay="auto"
+				step={1}
+				marks
+				min={1}
+				max={20}
+			/>
+		</div>
+	)
+}
+
+function SizeSlider(): JSX.Element {
+	const [value, setValue] = React.useState(get('size'))
+	const handleChange = (event: any, newValue) => {
+		setValue(newValue)
+		set('size', value);
+	};
+	const classes = sliderStyles();
+	return (
+		<div>
+			<Typography className={classes.formLabel} id="discrete-slider2" gutterBottom>
+				Size
+			</Typography>
+			<Slider
+				className={classes.slider}
+				defaultValue={54}
+				value={value}
+				onChange={handleChange}
+				getAriaValueText={valueText}
+				aria-labelledby="discrete-slider1"
+				valueLabelDisplay="auto"
+				step={1}
+				marks
+				min={1}
+				max={150}
+			/>
+		</div>
+	)
+}
+
+function AskUpdate(): JSX.Element {
+	const [value, setValue] = React.useState(get('askUpdate'))
+	const classes = sliderStyles();
+	return (
+		<div>
+			<Typography className={classes.formLabel}>
+				General
+			</Typography>
+					<FormControlLabel
+						className={classes.controlLabel}
+						label='Ask Before Updating'
+						checked={value}
+						onChange={(_, checked: boolean) => {
+							setValue(checked)
+							set('askUpdate', checked)
+						}}
+						control={<Checkbox/>}
+					/>
+		</div>
+	)
+}
+
 const Settings: React.FC<SettingsProps> = function ({ open, onClose }: SettingsProps) {
 	const classes = useStyles({ open });
 	return (
@@ -131,12 +217,7 @@ const Settings: React.FC<SettingsProps> = function ({ open, onClose }: SettingsP
 					onClick={() => {
 						onClose();
 						colorChange();
-						ipcRenderer.send(IpcRendererMessages.SAVE_SETTINGS, {
-							size: store.get('size'),
-							dvdSpeed: store.get('speed'),
-							colors: store.get('colors'),
-							askUpdate: store.get('askUpdate')
-						})
+						saveSettings()
 					}}
 				>
 					<ChevronLeft htmlColor="#777" />
@@ -144,40 +225,12 @@ const Settings: React.FC<SettingsProps> = function ({ open, onClose }: SettingsP
 				<Typography variant="h6">Settings</Typography>
 			</div>
 			<div className={classes.scroll}>
-				<div className={classes.formContainer}>
-					<Typography className={classes.formLabel} id="discrete-slider1" gutterBottom>
-						Speed
-					</Typography>
-					<Slider
-						className={classes.slider}
-						defaultValue={1}
-						value={store.get('speed')}
-						getAriaValueText={valueText}
-						aria-labelledby="discrete-slider1"
-						valueLabelDisplay="auto"
-						step={1}
-						marks
-						min={1}
-						max={20}
-					/>
+				<div className = {classes.formContainer}>
+					<SpeedSlider/>
 				</div>
 				<Divider/>
-				<div className={classes.formContainer}>
-					<Typography className={classes.formLabel} id="discrete-slider2" gutterBottom>
-						Size
-					</Typography>
-					<Slider
-						className={classes.slider}
-						defaultValue={54}
-						value={store.get('size')}
-						getAriaValueText={valueText}
-						aria-labelledby="discrete-slider1"
-						valueLabelDisplay="auto"
-						step={1}
-						marks
-						min={1}
-						max={150}
-					/>
+				<div className = {classes.formContainer}>
+					<SizeSlider/>
 				</div>
 				<Divider/>
 				<div className={classes.formContainer}>
@@ -185,7 +238,7 @@ const Settings: React.FC<SettingsProps> = function ({ open, onClose }: SettingsP
 						Colors
 					</Typography>
 					<div id="colorDiv">
-						{ /* container for color pickers */}
+						{ /* container for color pickers */ }
 					</div>
 					<div className={classes.buttonContainer}>
 						<Button
@@ -206,18 +259,7 @@ const Settings: React.FC<SettingsProps> = function ({ open, onClose }: SettingsP
 				</div>
 				<Divider />
 				<div className={classes.formContainer}>
-					<Typography className={classes.formLabel}>
-						General
-					</Typography>
-					<FormControlLabel
-						className={classes.controlLabel}
-						label='Ask Before Updating'
-						checked={store.get('askUpdate')}
-						onChange={(_, checked: boolean) => {
-							store.set('askUpdate', checked)
-						}}
-						control={<Checkbox/>}
-					/>
+					<AskUpdate/>
 				</div>
 				<Divider />
 				<div>

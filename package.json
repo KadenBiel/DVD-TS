@@ -1,6 +1,6 @@
 {
   "name": "dvdjs",
-  "version": "2.0.0",
+  "version": "2.0.0-beta",
   "description": "Full-fledged dvd-screen saver",
   "main": "src/main/main.ts",
   "repository": {
@@ -55,7 +55,8 @@
     "pretty-bytes": "^5.6.0",
     "react": "^17.0.2",
     "react-color": "^2.19.3",
-    "react-dom": "^17.0.1"
+    "react-dom": "^17.0.1",
+    "source-map-support": "^0.5.19"
   },
   "bugs": {
     "url": "https://github.com/KadenBiel/DVD-TS/issues"
