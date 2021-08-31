@@ -38,12 +38,21 @@ ipcRenderer.send(IpcRendererMessages.GET_SETTINGS)
 ipcRenderer.on(IpcRendererMessages.RETURN_SETTINGS, (event, settings) => {
     ipcRenderer.removeAllListeners(IpcRendererMessages.RETURN_SETTINGS);
     askUpdate = settings.askUpdate
-	var h = 54;
+	var h = settings.size;
     var w = Math.round(h/(2/3));
-    var dS = 2;
-    var colors = ['#0079fe','#0ed145','#ff7f27','#b83dba','#ec1c24','#fff200','#ff71ff','#ffffff'];
+    var dS = settings.dvdSpeed;
+    var colors = settings.colors;
     dvd(w,h,dS,colors);
 });
+
+ipcRenderer.on(IpcRendererMessages.NEW_SETTINGS, (event, settings) => {
+	askUpdate = settings.askUpdate
+	var h = settings.size;
+    var w = Math.round(h/(2/3));
+    var dS = settings.dvdSpeed;
+    var colors = settings.colors;
+    dvd(w,h,dS,colors);
+})
 
 const useStyles = makeStyles(() => ({
 	root: {

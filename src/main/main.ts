@@ -149,9 +149,15 @@ ipcMain.on(IpcRendererMessages.GET_SETTINGS, (event) => {
 
 ipcMain.on(IpcRendererMessages.SAVE_SETTINGS, (event, settings) => { // Saves the settings in storage
 	store.set('size', settings.size);
-	store.set('speed', settings.speed);
+	store.set('speed', settings.dvdSpeed);
 	store.set('colors', settings.colors);
 	store.set('askUpdate', settings.askUpdate)
+	event.sender.send(IpcRendererMessages.NEW_SETTINGS, {
+		size: settings.size,
+		dvdSpeed: settings.dvdSpeed,
+		colors: settings.colors,
+		askUpdate: settings.askUpdate
+	})
 });
 
 ipcMain.on(IpcRendererMessages.CLEAR_SETTINGS, () => { // For debugging, resets settings to defaults

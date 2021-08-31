@@ -3,7 +3,7 @@ import { ISettings } from '../common/ISettings';
 import { IpcRendererMessages } from '../common/ipc-messages'
 import { ipcRenderer } from 'electron';
 
-export const store = new Store<ISettings>();
+const store = new Store<ISettings>();
 
 let colorDiv;
 
@@ -65,4 +65,26 @@ export function colorChange() {
 		dColor[i] = colors[i].value
 	}
 	store.set('colors', dColor)
+}
+
+export function saveSettings() {
+	console.log('saving settings')
+	var size = store.get('size')
+	var speed = store.get('speed')
+	var colors = store.get('colors')
+	var askUpdate = store.get('askUpdate')
+	ipcRenderer.send(IpcRendererMessages.SAVE_SETTINGS, {
+		size: size,
+		dvdSpeed: speed,
+		colors: colors,
+		askUpdate: askUpdate
+	})
+}
+
+export function get(setting) {
+	return store.get(setting)
+}
+
+export function set(setting, value) {
+	store.set(setting, value)
 }
