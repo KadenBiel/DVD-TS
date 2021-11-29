@@ -179,3 +179,7 @@ ipcMain.on(IpcMessages.RESTART_DVD, () => { // Restarts app
 	app.relaunch();
 	app.quit();
 });
+
+ipcMain.on(IpcRendererMessages.START_DVD, (event) => {
+	event.sender.send(IpcRendererMessages.START_DVD)
+})

@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import SettingsIcon from '@material-ui/icons/Settings';
 import CloseIcon from '@material-ui/icons/Close';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
 import {
 	Dialog,
 	DialogContent,
@@ -38,11 +39,6 @@ ipcRenderer.send(IpcRendererMessages.GET_SETTINGS)
 ipcRenderer.on(IpcRendererMessages.RETURN_SETTINGS, (event, settings) => {
     ipcRenderer.removeAllListeners(IpcRendererMessages.RETURN_SETTINGS);
     askUpdate = settings.askUpdate
-	var h = settings.size;
-    var w = Math.round(h/(2/3));
-    var dS = settings.dvdSpeed;
-    var colors = settings.colors;
-    dvd(w,h,dS,colors);
 });
 
 ipcRenderer.on(IpcRendererMessages.NEW_SETTINGS, (event, settings) => {
@@ -116,6 +112,16 @@ const TitleBar: React.FC<TitleBarProps> = function ({ settingsOpen, setSettingsO
 			>
 				<CloseIcon htmlColor='#777' />
 			</IconButton>
+			<IconButton
+				className={classes.button}
+				size='small'
+				style={{left:25}}
+				onClick={() => {
+					ipcRenderer.send(IpcRendererMessages.START_DVD)
+				}}
+			>
+			<AutorenewIcon htmlColor='#777'/>
+			</IconButton>
 		</div>
 	);
 };
@@ -126,6 +132,7 @@ export default function App(): JSX.Element  {
 		state: 'unavailable',
 	});
 	const [diaOpen, setDiaOpen] = useState(true);
+	const [startDia, setStartDia] = useState(true);
 
 	const classes = useStyles();
 
@@ -195,7 +202,20 @@ export default function App(): JSX.Element  {
 				)}
 			</Dialog>
             <div id='cDiv' className={classes.canvas}>
-				{/* container for DVD canvas */}
+				<Dialog open={startDia}>
+					<DialogContent>
+						<DialogTitle>Welcome!</DialogTitle>
+						<DialogContentText>I hope you enjoy the updated version, I spent a really long time trying to make it work! please click "CONTINUE" below to begin :)</DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button
+							onClick={() => {
+								setStartDia(false)
+								ipcRenderer.send(IpcRendererMessages.START_DVD)
+							}}
+						> Continue </Button>
+					</DialogActions>
+				</Dialog>
             </div>
 		</ThemeProvider>
 	);

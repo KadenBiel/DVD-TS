@@ -1,3 +1,26 @@
+import { ipcRenderer } from "electron";
+import { IpcRendererMessages } from '../common/ipc-messages';
+
+var img = <HTMLImageElement> document.createElement('img');
+img.src = './img/dvd.png';
+
+const can = <HTMLCanvasElement> document.createElement('canvas');
+
+ipcRenderer.on(IpcRendererMessages.START_DVD, () => {
+    console.log('getting settings')
+    ipcRenderer.send(IpcRendererMessages.GET_SETTINGS);
+    ipcRenderer.on(IpcRendererMessages.RETURN_SETTINGS, (event, settings) => {
+        console.log('got settings')
+        ipcRenderer.removeAllListeners(IpcRendererMessages.RETURN_SETTINGS);
+        var h = settings.size;
+        var w = Math.round(h/(2/3));
+        var dS = settings.dvdSpeed;
+        var colors = settings.colors;
+        console.log('initializing dvd')
+        dvd(w,h,dS,colors);
+    })
+})
+
 export default function dvd(w,h,dS,colors){    
     let x = 0;
     let y = 20;
@@ -6,13 +29,9 @@ export default function dvd(w,h,dS,colors){
     var r = 0;
     var g = 255;
     var b = 0;
-    var img = <HTMLImageElement> document.createElement('img');
     let imgData = null;
 
-    img.src = './img/dvd.png';
-
     const canDiv = document.getElementById('cDiv');
-    const can = <HTMLCanvasElement> document.createElement('canvas');
     const ctx = can.getContext("2d");
 
     canDiv.appendChild(can)
@@ -123,7 +142,6 @@ export default function dvd(w,h,dS,colors){
         var height = size[1];
 
         var reqAnimFrame = window.requestAnimationFrame
-    
         reqAnimFrame(animate);
 
         for (var i=0;i<dS;i++) { // change if you want it to go faster
@@ -181,7 +199,7 @@ export default function dvd(w,h,dS,colors){
             ctx.clearRect(0, height, width, 200);
             ctx.fillText("BOTTOM RIGHT", 10, H+100);
         }
-    };  
+    };
 
     setCanvasSize(W, H);
     ctx.font = 'italic 20pt Calibri';
