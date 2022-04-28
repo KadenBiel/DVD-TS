@@ -1,6 +1,6 @@
 {
   "name": "dvdjs",
-  "version": "2.1.0-beta",
+  "version": "2.1.1",
   "description": "Full-fledged dvd-screen saver",
   "main": "src/main/main.ts",
   "repository": {
@@ -30,7 +30,7 @@
     "@types/webpack-env": "^1.15.3",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
-    "electron": "11.1.1",
+    "electron": "^11.1.1",
     "electron-builder": "^22.9.1",
     "electron-webpack": "^2.8.2",
     "electron-webpack-ts": "^4.0.1",

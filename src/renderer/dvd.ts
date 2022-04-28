@@ -1,8 +1,16 @@
 import { ipcRenderer } from "electron";
-import { IpcRendererMessages } from '../common/ipc-messages';
+import { /*IpcMessages,*/ IpcRendererMessages } from '../common/ipc-messages';
+import path from 'path';
 
 var img = <HTMLImageElement> document.createElement('img');
-img.src = './img/dvd.png';
+// @ts-ignore
+const imgPath = path.join(__static, './img/dvd.png');
+img.src = imgPath;
+
+/*ipcRenderer.on(IpcMessages.DVD_LOADED, () => {
+    img.src = `loadImg://${imgPath}`
+    console.log(imgPath)
+})*/
 
 const can = <HTMLCanvasElement> document.createElement('canvas');
 

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, /*ipcRenderer*/ } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import Store from 'electron-store';
 import { format as formatUrl } from 'url';
@@ -24,6 +24,7 @@ function createWindow() { // Function for creating the window
 		webPreferences: {
 			nodeIntegration: true,
 			devTools: devTools,
+			webSecurity: false
 		},
 	});
 
@@ -73,7 +74,7 @@ function setDefaultSettings() {
 	store.set('askUpdate', true)
 }
 
-app.on('ready', () => { // Creates the mainWindow, sets the app menu and checks for updates when the app is ready
+app.on('ready', async() => { // Creates the mainWindow, sets the app menu and checks for updates when the app is ready
 	createWindow();
 	setDefaultSettings();
 	autoUpdater.checkForUpdates();
