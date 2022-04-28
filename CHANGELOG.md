@@ -3,10 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.1.1] - 2022-04-27
 ### Changed
-- Changed UI around with React and Material-UI
-- Asks to update first (can be disabled)
+- Changed toolbar UI
+- Settings page re-designed with sleek UI
+- Added ask to update setting
+- Toolbar cannot be hidden anymore (will re-implement feature in future updates)
 
 ## [1.4.2] - 2021-04-02
 ### Changed
@@ -110,7 +112,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Green rectangle bounces around canvas in similar fashion to DVD screen saver
 - HTML canvas doesn't fill whole screen
 
-[UNRELEASED]: https://github.com/KadenBiel/DVD-TS/compare/v1.2.1...HEAD
+[UNRELEASED]: https://github.com/KadenBiel/DVD-TS/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/KadenBiel/DVD-TS/compare/v1.4.2...v2.1.1
 [1.4.2]: https://github.com/KadenBiel/DVD-TS/compare/v1.3.2...v1.4.2
 [1.3.2]: https://github.com/KadenBiel/DVD-TS/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/KadenBiel/DVD-TS/compare/v1.2.1...v1.3.1
